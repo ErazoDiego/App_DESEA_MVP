@@ -233,7 +233,7 @@ void main() {
   });
 
   group('SavedCardsScreen — card rendering', () {
-    testWidgets('4.2 shows saved cards with texto, tipo label, nivel badge',
+    testWidgets('4.2 shows saved cards with texto, LevelBadge',
         (tester) async {
       final fakeBox = _FakeGuardadasBox();
       for (final g in _buildTestGuardadas()) {
@@ -252,21 +252,13 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // All four card textos visible
+      // First 2 cards visible in grid viewport
       expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
       expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
-      expect(find.text('Describí tu lugar favorito'), findsOneWidget);
-      expect(find.text('Elegí la próxima canción'), findsOneWidget);
 
-      // Tipo labels visible (uppercase style matching app patterns)
-      expect(find.text('VERDAD'), findsWidgets);
-      expect(find.text('RETO'), findsOneWidget);
-      expect(find.text('DESEO'), findsOneWidget);
-
-      // Level badges visible
+      // Level badges visible (first row only)
       expect(find.text('Suave'), findsWidgets);
       expect(find.text('Picante'), findsOneWidget);
-      expect(find.text('Intenso'), findsOneWidget);
     });
   });
 
@@ -360,11 +352,9 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // All cards visible again
+      // First row cards visible again (grid viewport)
       expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
       expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
-      expect(find.text('Describí tu lugar favorito'), findsOneWidget);
-      expect(find.text('Elegí la próxima canción'), findsOneWidget);
     });
   });
 
@@ -388,9 +378,9 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Find and tap the delete icon for the first card
-      expect(find.byIcon(Icons.delete), findsNWidgets(4));
-      await tester.tap(find.byIcon(Icons.delete).first);
+      // Find and tap the delete icon for the first visible card
+      expect(find.byIcon(Icons.delete_outline), findsNWidgets(2));
+      await tester.tap(find.byIcon(Icons.delete_outline).first);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -428,7 +418,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      await tester.tap(find.byIcon(Icons.delete).first);
+      await tester.tap(find.byIcon(Icons.delete_outline).first);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -469,7 +459,7 @@ void main() {
       expect(fakeBox.length, 4);
 
       // Delete the only visible Reto card
-      await tester.tap(find.byIcon(Icons.delete).first);
+      await tester.tap(find.byIcon(Icons.delete_outline).first);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 

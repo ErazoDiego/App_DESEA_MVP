@@ -1,0 +1,23 @@
+change: cards-collection-style
+status: archived
+date: "2026-05-13"
+summary: >
+  Redesigned SavedCardsScreen and MisCartasScreen from flat ListView+Card to
+  trading-card-grid visual style. Created shared CollectionCardTile widget
+  with color-coded gradients by tipo, optional image, delete overlay, and
+  press animation. 5/5 tasks completed. 318 tests passing.
+artifacts:
+  engram:
+    proposal: observation #142
+    design: observation #143
+    tasks: observation #144
+    apply_progress: observation #145
+    verify_report: observation #147
+  files:
+    proposal: openspec/changes/archive/2026-05-13-cards-collection-style/proposal.md
+    design: openspec/changes/archive/2026-05-13-cards-collection-style/design.md
+    tasks: openspec/changes/archive/2026-05-13-cards-collection-style/tasks.md
+    apply_summary: openspec/changes/archive/2026-05-13-cards-collection-style/apply-summary.md
+    verify_report: openspec/changes/archive/2026-05-13-cards-collection-style/verify-report.md
+main_specs_updated: []
+last_updated: "2026-05-13"

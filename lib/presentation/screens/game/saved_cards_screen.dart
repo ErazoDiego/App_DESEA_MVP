@@ -7,7 +7,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
 import '../../../data/models/carta_guardada_model.dart';
 import '../../providers/sesion_providers.dart';
-import '../../widgets/session/level_badge.dart';
+import '../../widgets/collection_card_tile.dart';
 
 // ---------------------------------------------------------------------------
 // Filter option descriptor
@@ -122,23 +122,6 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
     }
   }
 
-  // ── Label helpers ──────────────────────────────────────────────
-
-  String _tipoLabel(String tipo) {
-    switch (tipo) {
-      case 'verdad':
-        return 'Verdad';
-      case 'reto':
-        return 'Reto';
-      case 'deseo':
-        return 'Deseo';
-      case 'sinLimites':
-        return 'Sin Límites';
-      default:
-        return tipo;
-    }
-  }
-
   // ── Build ──────────────────────────────────────────────────────
 
   @override
@@ -235,14 +218,24 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
                         ),
                   ),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+              : GridView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 0.72,
+                  ),
                   itemCount: _filteredCards.length,
                   itemBuilder: (context, index) {
                     final card = _filteredCards[index];
-                    return _SavedCardTile(
-                      card: card,
-                      tipoLabel: _tipoLabel(card.tipo),
+                    return CollectionCardTile(
+                      text: card.texto,
+                      tipo: card.tipo,
+                      nivel: card.nivel,
+                      dateLabel:
+                          '${card.guardadaEn.day.toString().padLeft(2, '0')}/${card.guardadaEn.month.toString().padLeft(2, '0')}/${card.guardadaEn.year}',
                       onDelete: () => _deleteCard(card),
                     );
                   },
@@ -253,83 +246,4 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Saved card tile widget
-// ---------------------------------------------------------------------------
 
-class _SavedCardTile extends StatelessWidget {
-  final CartaGuardadaModel card;
-  final String tipoLabel;
-  final VoidCallback onDelete;
-
-  const _SavedCardTile({
-    required this.card,
-    required this.tipoLabel,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final d = card.guardadaEn;
-    final dateStr =
-        '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top row: texto + delete button
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    card.texto,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.delete, size: 20),
-                  color: AppColors.onSurfaceSecondary,
-                  onPressed: onDelete,
-                  visualDensity: VisualDensity.compact,
-                  tooltip: AppStrings.savedCardsDeleteTitle,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            // Bottom row: tipo label + nivel badge + date
-            Row(
-              children: [
-                Text(
-                  tipoLabel.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.fuchsiaAccent,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.2,
-                      ),
-                ),
-                const SizedBox(width: 12),
-                LevelBadge(nivel: card.nivel),
-                const Spacer(),
-                Text(
-                  dateStr,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.onSurfaceSecondary,
-                      ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

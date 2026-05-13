@@ -7,7 +7,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
 import '../../../data/models/carta_personalizada_model.dart';
 import '../../providers/libre_providers.dart';
-import '../../widgets/session/level_badge.dart';
+import '../../widgets/collection_card_tile.dart';
 
 // ---------------------------------------------------------------------------
 // Filter option descriptor
@@ -122,23 +122,6 @@ class _MisCartasScreenState extends ConsumerState<MisCartasScreen> {
     }
   }
 
-  // ── Label helpers ──────────────────────────────────────────────
-
-  String _categoriaLabel(String? categoria) {
-    switch (categoria) {
-      case 'verdad':
-        return 'Verdad';
-      case 'reto':
-        return 'Reto';
-      case 'deseo':
-        return 'Deseo';
-      case 'sinLimites':
-        return 'Sin Límites';
-      default:
-        return categoria ?? 'Personalizada';
-    }
-  }
-
   // ── Edit navigation ────────────────────────────────────────────
 
   Future<void> _editCard(CartaPersonalizadaModel card) async {
@@ -242,14 +225,25 @@ class _MisCartasScreenState extends ConsumerState<MisCartasScreen> {
                         ),
                   ),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+              : GridView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 0.72,
+                  ),
                   itemCount: _filteredCards.length,
                   itemBuilder: (context, index) {
                     final card = _filteredCards[index];
-                    return _PersonalCardTile(
-                      card: card,
-                      categoriaLabel: _categoriaLabel(card.categoria),
+                    return CollectionCardTile(
+                      text: card.texto,
+                      tipo: card.categoria ?? '',
+                      nivel: card.nivel,
+                      imageUrl: card.imagenUrl,
+                      dateLabel:
+                          '${card.creadaEn.day.toString().padLeft(2, '0')}/${card.creadaEn.month.toString().padLeft(2, '0')}/${card.creadaEn.year}',
                       onTap: () => _editCard(card),
                       onDelete: () => _deleteCard(card),
                     );
@@ -261,89 +255,4 @@ class _MisCartasScreenState extends ConsumerState<MisCartasScreen> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Personal card tile widget
-// ---------------------------------------------------------------------------
 
-class _PersonalCardTile extends StatelessWidget {
-  final CartaPersonalizadaModel card;
-  final String categoriaLabel;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
-
-  const _PersonalCardTile({
-    required this.card,
-    required this.categoriaLabel,
-    required this.onTap,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final d = card.creadaEn;
-    final dateStr =
-        '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Top row: texto + delete button
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      card.texto,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
-                    color: AppColors.onSurfaceSecondary,
-                    onPressed: onDelete,
-                    visualDensity: VisualDensity.compact,
-                    tooltip: AppStrings.misCartasDeleteTitle,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              // Bottom row: categoria label + nivel badge + date
-              Row(
-                children: [
-                  Text(
-                    categoriaLabel.toUpperCase(),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.fuchsiaAccent,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.2,
-                        ),
-                  ),
-                  const SizedBox(width: 12),
-                  LevelBadge(nivel: card.nivel),
-                  const Spacer(),
-                  Text(
-                    dateStr,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.onSurfaceSecondary,
-                        ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
