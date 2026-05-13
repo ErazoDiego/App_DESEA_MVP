@@ -123,10 +123,24 @@ class AppStrings {
   static const String gameHubColeccionSection = 'Tu colección';
 
   /// Subtítulo de inmersión mostrado en la sección hero del hub.
-  static const String gameHubImmersionSubtitle = 'La noche empieza acá';
+  static const String gameHubImmersionSubtitle = 'Tu noche empieza acá';
 
   /// Texto del CTA en la sección hero para empezar una sesión.
   static const String gameHubCtaSesion = 'Empezar sesión';
+
+  /// Mood cards para la sección hero.
+  static const String moodPicante = 'Picante';
+  static const String moodDivertido = 'Divertido';
+
+  /// Chips informativos de la card de Sesión.
+  static const String gameHubSesionDuracion = '~30 min';
+  static const String gameHubSesionTipo = 'Progresivo';
+
+  /// Badge de recomendación para Sesión.
+  static const String gameHubRecomendado = 'Recomendado';
+
+  /// Título de la sección de cartas del usuario.
+  static const String gameHubTusCartasSection = 'Tus cartas';
 
   // ─────────────────────────────────────────────────────────────
   // Session Mode

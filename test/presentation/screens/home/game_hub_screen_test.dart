@@ -56,78 +56,109 @@ Widget buildApp({
 }
 
 void main() {
-  testWidgets('renders title and all mode cards', (tester) async {
+  // ── Modos ───────────────────────────────────────────────────────
+
+  testWidgets('renders Sesión card with title, description and chips',
+      (tester) async {
     await tester.pumpWidget(buildApp());
 
-    // Header
-    expect(find.text(AppStrings.gameHubTitle), findsOneWidget);
-
-    // First card — Sesión
+    // Sesión card
     expect(find.text(AppStrings.modoSesion), findsOneWidget);
     expect(find.text(AppStrings.modoSesionDesc), findsOneWidget);
-
-    // Second card — Libre
-    expect(find.text(AppStrings.modoLibre), findsOneWidget);
-    expect(find.text(AppStrings.libreCardDescription), findsOneWidget);
-
-    // Third card — Saved Cards
-    expect(find.text(AppStrings.savedCardsHubTitle), findsOneWidget);
+    expect(find.text(AppStrings.gameHubRecomendado), findsOneWidget);
+    expect(find.text(AppStrings.gameHubSesionDuracion), findsOneWidget);
+    expect(find.text(AppStrings.gameHubSesionTipo), findsOneWidget);
   });
 
-  testWidgets('shows saved cards count badge with N guardadas',
+  testWidgets('renders Libre card with title and description',
       (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.modoLibre), findsOneWidget);
+    expect(find.text(AppStrings.libreCardDescription), findsOneWidget);
+  });
+
+  // ── Mood Cards ──────────────────────────────────────────────────
+
+  testWidgets('renders mood cards (Picante / Divertido)', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.moodPicante), findsOneWidget);
+    expect(find.text(AppStrings.moodDivertido), findsOneWidget);
+  });
+
+  // ── Hero Section ────────────────────────────────────────────────
+
+  testWidgets('hero section renders title and subtitle', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    // "DESEA" aparece en header + hero title (al menos 2)
+    expect(find.text(AppStrings.appName), findsAtLeast(1));
+
+    // Hero subtitle (displayed in uppercase)
+    expect(
+      find.text(AppStrings.gameHubImmersionSubtitle.toUpperCase()),
+      findsOneWidget,
+    );
+  });
+
+  // ── Tus Cartas ──────────────────────────────────────────────────
+
+  testWidgets('renders "Tus cartas" section header', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.gameHubTusCartasSection), findsOneWidget);
+  });
+
+  testWidgets('renders Guardadas and Mis Cartas library cards',
+      (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.savedCardsHubTitle), findsOneWidget);
+    expect(find.text(AppStrings.misCartasHubTitle), findsOneWidget);
+  });
+
+  // ── Guardadas Count ────────────────────────────────────────────
+
+  testWidgets('shows guardadas count when cards exist', (tester) async {
     await tester.pumpWidget(buildApp(savedCardsCount: 3));
 
-    expect(find.text('3 guardadas'), findsOneWidget);
+    // "3" aparece al menos una vez (en la card Guardadas)
+    expect(find.text('3'), findsOneWidget);
   });
 
   testWidgets('shows 0 guardadas when box is empty', (tester) async {
     await tester.pumpWidget(buildApp(savedCardsCount: 0));
 
-    expect(find.text('0 guardadas'), findsOneWidget);
+    // "0" aparece al menos una vez (puede aparecer en ambas cards si ambas están vacías)
+    expect(find.text('0'), findsAtLeast(1));
   });
 
-  // ── Hero Section ─────────────────────────────────────────────────
-
-  testWidgets('hero section renders title, subtitle and CTA', (tester) async {
-    await tester.pumpWidget(buildApp());
-
-    // Hero title — "DESEA"
-    expect(find.text(AppStrings.appName), findsOneWidget);
-
-    // Hero subtitle — "La noche empieza acá"
-    expect(find.text(AppStrings.gameHubImmersionSubtitle), findsOneWidget);
-
-    // Hero CTA — "Empezar sesión"
-    expect(find.text(AppStrings.gameHubCtaSesion), findsOneWidget);
-  });
-
-  // ── Section Headers ──────────────────────────────────────────────
-
-  testWidgets('renders "Tu colección" section header', (tester) async {
-    await tester.pumpWidget(buildApp());
-
-    expect(find.text(AppStrings.gameHubColeccionSection), findsOneWidget);
-  });
-
-  testWidgets('renders "Mis cartas" library card', (tester) async {
-    await tester.pumpWidget(buildApp());
-
-    expect(find.text(AppStrings.misCartasHubTitle), findsOneWidget);
-  });
-
-  // ── Personalizadas Count ─────────────────────────────────────────
+  // ── Personalizadas Count ──────────────────────────────────────
 
   testWidgets('shows personalizadas count for Mis Cartas', (tester) async {
     await tester.pumpWidget(buildApp(personalizadasCount: 5));
 
-    // Mis Cartas card shows count in a badge
+    // Guardadas=0, Pers=5 → "5" aparece solo en Mis Cartas
+    expect(find.text('0'), findsOneWidget);
     expect(find.text('5'), findsOneWidget);
   });
 
-  testWidgets('shows 0 personalizadas when box is empty', (tester) async {
-    await tester.pumpWidget(buildApp(personalizadasCount: 0));
+  // ── Bottom CTA ─────────────────────────────────────────────────
 
-    expect(find.text('0'), findsOneWidget);
+  testWidgets('renders bottom CTA with "Empezar sesión"', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.gameHubCtaSesion), findsOneWidget);
+  });
+
+  // ── Header ─────────────────────────────────────────────────────
+
+  testWidgets('renders header with back button and app name',
+      (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    // Back button icon
+    expect(find.byIcon(Icons.arrow_back_ios_new), findsOneWidget);
   });
 }

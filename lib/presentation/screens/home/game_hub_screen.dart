@@ -5,69 +5,118 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
-import '../../widgets/card_editor/gaming_color_tokens.dart';
 
-/// Pantalla principal del hub de juego con diseño inmersivo.
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+/// Acento violeta pastel para el hub — #bf5fff
+const Color _accentViolet = Color(0xFFBF5FFF);
+
+/// Violeta más saturado para chips/badges — rgba(160,60,255,X)
+const Color _chipPurple = Color(0xFFA03CFF);
+
+/// Fondo oscuro específico del hub — #0d0010
+const Color _hubBackground = Color(0xFF0D0010);
+
+/// Color de superficie para cards en el hub.
+Color get _cardSurface => Colors.white.withValues(alpha: 0.04);
+
+/// Color de borde para cards en el hub.
+Color get _cardBorder => Colors.white.withValues(alpha: 0.10);
+
+// ---------------------------------------------------------------------------
+// GameHubScreen
+// ---------------------------------------------------------------------------
+
+/// Pantalla principal del hub de juego con diseño renovado.
 ///
-/// Muestra una sección hero con gradiente y CTA, tarjetas de modos de
-/// juego (Sesión/Libre) y tarjetas de acceso rápido a colecciones
-/// (Guardadas/Mis Cartas) con microinteracciones de escala.
+/// Muestra: header con volver, hero con glow + mood cards, modos destacados,
+/// grid de tus cartas, y CTA fijo al pie.
 class GameHubScreen extends ConsumerWidget {
   const GameHubScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor: _hubBackground,
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const _Header(),
             const _HeroSection(),
+            const _MoodRow(),
             _SectionHeader(title: AppStrings.gameHubTitle),
-            _GameModeCard(
-              color: GamingColorTokens.violet,
-              icon: Icons.auto_awesome,
-              title: AppStrings.modoSesion,
-              description: AppStrings.modoSesionDesc,
-              onTap: () => context.go('/game/sesion/default'),
+            _SesionCard(onTap: () => context.go('/game/sesion/default')),
+            const SizedBox(height: 10),
+            _LibreCard(onTap: () => context.go('/game/libre')),
+            _TusCartasHeader(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final guardCount = ref
+                      .watch(guardadasBoxProvider)
+                      .asData
+                      ?.value
+                      .length ?? 0;
+                  final persCount = ref
+                      .watch(personalizadasBoxProvider)
+                      .asData
+                      ?.value
+                      .length ?? 0;
+                  return _CardsGrid(
+                    guardadasCount: guardCount,
+                    personalizadasCount: persCount,
+                    onGuardadasTap: () => context.go('/game/guardadas'),
+                    onMisCartasTap: () => context.go('/game/mis-cartas'),
+                  );
+                },
+              ),
             ),
-            const SizedBox(height: 12),
-            _GameModeCard(
-              color: GamingColorTokens.orange,
-              icon: Icons.construction,
-              title: AppStrings.modoLibre,
-              description: AppStrings.libreCardDescription,
-              onTap: () => context.go('/game/libre'),
+            const SizedBox(height: 100),
+          ],
+        ),
+      ),
+      bottomNavigationBar: _BottomCta(
+        onTap: () => context.go('/game/sesion/default'),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _Header
+// ---------------------------------------------------------------------------
+
+class _Header extends StatelessWidget {
+  const _Header();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(4, 8, 20, 8),
+        child: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white.withValues(alpha: 0.7),
+                size: 20,
+              ),
+              onPressed: () => context.go('/home'),
             ),
-            _SectionHeader(title: AppStrings.gameHubColeccionSection),
-            Consumer(
-              builder: (context, ref, child) {
-                final count =
-                    ref.watch(guardadasBoxProvider).asData?.value.length ?? 0;
-                return _LibraryCard(
-                  color: GamingColorTokens.azul,
-                  icon: Icons.bookmark,
-                  title: AppStrings.savedCardsHubTitle,
-                  countText: '$count guardadas',
-                  onTap: () => context.go('/game/guardadas'),
-                );
-              },
+            const SizedBox(width: 4),
+            Text(
+              AppStrings.appName,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 12),
-            Consumer(
-              builder: (context, ref, child) {
-                final count =
-                    ref.watch(personalizadasBoxProvider).asData?.value.length ?? 0;
-                return _LibraryCard(
-                  color: GamingColorTokens.fuchsia,
-                  icon: Icons.edit_note,
-                  title: AppStrings.misCartasHubTitle,
-                  countText: '$count',
-                  onTap: () => context.go('/game/mis-cartas'),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -75,111 +124,143 @@ class GameHubScreen extends ConsumerWidget {
   }
 }
 
-/// Hero section con gradiente, glow y CTA de sesión.
+// ---------------------------------------------------------------------------
+// _HeroSection
+// ---------------------------------------------------------------------------
+
 class _HeroSection extends StatelessWidget {
   const _HeroSection();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 280,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColors.fuchsiaAccent.withValues(alpha: 0.30),
-            AppColors.background,
-          ],
-        ),
-      ),
-      child: Stack(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Positioned(
-            top: -50,
-            left: -50,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.fuchsiaAccent.withValues(alpha: 0.20),
-                    blurRadius: 100,
-                    spreadRadius: 50,
-                  ),
-                ],
+          // ── Two-tone "DESEA" — D hot pink, ESEA gradient to white ──
+          ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xFFff40ff), Colors.white],
+              stops: [0.0, 0.35],
+            ).createShader(bounds),
+            blendMode: BlendMode.srcIn,
+            child: Text(
+              AppStrings.appName,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 42,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 4.0,
+                height: 1.1,
               ),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.appName,
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: AppColors.fuchsiaAccent,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppStrings.gameHubImmersionSubtitle,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.onSurface,
-                        ),
-                  ),
-                  const Spacer(),
-                  _buildCtaButton(context),
-                ],
-              ),
+          const SizedBox(height: 6),
+          // ── Subtitle: uppercase, letter-spacing, purple ──
+          Text(
+            AppStrings.gameHubImmersionSubtitle.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Color(0xFF9933ff),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 4.0,
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildCtaButton(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
-        onTap: () => context.go('/game/sesion/default'),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [GamingColorTokens.violet, AppColors.fuchsiaAccent],
-            ),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.fuchsiaAccent.withValues(alpha: 0.4),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: const Text(
-            AppStrings.gameHubCtaSesion,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+// ---------------------------------------------------------------------------
+// _MoodRow
+// ---------------------------------------------------------------------------
+
+class _MoodRow extends StatelessWidget {
+  const _MoodRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: _MoodCard(
+              icon: Icons.whatshot,
+              label: AppStrings.moodPicante,
+              color: _accentViolet,
             ),
           ),
-        ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _MoodCard(
+              icon: Icons.celebration,
+              label: AppStrings.moodDivertido,
+              color: _chipPurple,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-/// Encabezado de sección con estilo uppercase y letter-spacing.
+class _MoodCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  const _MoodCard({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: _cardSurface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _cardBorder),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _SectionHeader
+// ---------------------------------------------------------------------------
+
 class _SectionHeader extends StatelessWidget {
   final String title;
 
@@ -188,13 +269,13 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 14),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
           title,
           style: TextStyle(
-            color: AppColors.onSurfaceSecondary,
+            color: Colors.white.withValues(alpha: 0.55),
             fontSize: 13,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.0,
@@ -205,105 +286,83 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-/// Tarjeta de modo de juego con microinteracción de escala y glow.
-class _GameModeCard extends StatefulWidget {
-  final Color color;
-  final IconData icon;
-  final String title;
-  final String description;
+// ---------------------------------------------------------------------------
+// _SesionCard — destacada
+// ---------------------------------------------------------------------------
+
+class _SesionCard extends StatelessWidget {
   final VoidCallback onTap;
 
-  const _GameModeCard({
-    required this.color,
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.onTap,
-  });
-
-  @override
-  State<_GameModeCard> createState() => _GameModeCardState();
-}
-
-class _GameModeCardState extends State<_GameModeCard> {
-  double _scale = 1.0;
+  const _SesionCard({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
-        onTapDown: (_) => setState(() => _scale = 0.96),
-        onTapUp: (_) {
-          setState(() => _scale = 1.0);
-          widget.onTap();
-        },
-        onTapCancel: () => setState(() => _scale = 1.0),
-        child: AnimatedScale(
-          scale: _scale,
-          duration: const Duration(milliseconds: 120),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  widget.color.withValues(alpha: 0.25),
-                  AppColors.surface,
-                ],
-              ),
-              border: Border.all(
-                color: widget.color.withValues(alpha: 0.30),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: widget.color.withValues(alpha: 0.15),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: _cardSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: _accentViolet.withValues(alpha: 0.7),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ── Badge "Recomendado" ──
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _chipPurple.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: _chipPurple.withValues(alpha: 0.3),
+                  ),
                 ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
+                child: Text(
+                  AppStrings.gameHubRecomendado,
+                  style: TextStyle(
+                    color: _accentViolet,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // ── Título + descripción ──
+              Text(
+                AppStrings.modoSesion,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                AppStrings.modoSesionDesc,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.55),
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // ── Chips ──
+              Row(
                 children: [
-                  Icon(widget.icon, color: widget.color, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          widget.description,
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _Chip(label: AppStrings.gameHubSesionDuracion),
                   const SizedBox(width: 8),
-                  Icon(
-                    Icons.chevron_right,
-                    color: Colors.white.withValues(alpha: 0.4),
-                  ),
+                  _Chip(label: AppStrings.gameHubSesionTipo),
                 ],
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -311,105 +370,284 @@ class _GameModeCardState extends State<_GameModeCard> {
   }
 }
 
-/// Tarjeta de acceso a colección (Guardadas / Mis Cartas) con badge de conteo.
-class _LibraryCard extends StatefulWidget {
-  final Color color;
+// ---------------------------------------------------------------------------
+// _LibreCard — secundaria
+// ---------------------------------------------------------------------------
+
+class _LibreCard extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _LibreCard({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: _cardSurface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _cardBorder),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppStrings.modoLibre,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      AppStrings.libreCardDescription,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.55),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _Chip
+// ---------------------------------------------------------------------------
+
+class _Chip extends StatelessWidget {
+  final String label;
+
+  const _Chip({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: _chipPurple.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: _chipPurple.withValues(alpha: 0.20),
+        ),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: _chipPurple.withValues(alpha: 0.8),
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _TusCartasHeader
+// ---------------------------------------------------------------------------
+
+class _TusCartasHeader extends StatelessWidget {
+  const _TusCartasHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 14),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          AppStrings.gameHubTusCartasSection,
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.45),
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _CardsGrid — 2 columnas
+// ---------------------------------------------------------------------------
+
+class _CardsGrid extends StatelessWidget {
+  final int guardadasCount;
+  final int personalizadasCount;
+  final VoidCallback onGuardadasTap;
+  final VoidCallback onMisCartasTap;
+
+  const _CardsGrid({
+    required this.guardadasCount,
+    required this.personalizadasCount,
+    required this.onGuardadasTap,
+    required this.onMisCartasTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _LibraryCard(
+            icon: Icons.bookmark,
+            label: AppStrings.savedCardsHubTitle,
+            count: guardadasCount,
+            color: _chipPurple,
+            onTap: onGuardadasTap,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _LibraryCard(
+            icon: Icons.edit_note,
+            label: AppStrings.misCartasHubTitle,
+            count: personalizadasCount,
+            color: _accentViolet,
+            onTap: onMisCartasTap,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _LibraryCard
+// ---------------------------------------------------------------------------
+
+class _LibraryCard extends StatelessWidget {
   final IconData icon;
-  final String title;
-  final String countText;
+  final String label;
+  final int count;
+  final Color color;
   final VoidCallback onTap;
 
   const _LibraryCard({
-    required this.color,
     required this.icon,
-    required this.title,
-    required this.countText,
+    required this.label,
+    required this.count,
+    required this.color,
     required this.onTap,
   });
 
   @override
-  State<_LibraryCard> createState() => _LibraryCardState();
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          color: _cardSurface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: _cardBorder),
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 26),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '$count',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.35),
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _LibraryCardState extends State<_LibraryCard> {
-  double _scale = 1.0;
+// ---------------------------------------------------------------------------
+// _BottomCta
+// ---------------------------------------------------------------------------
+
+class _BottomCta extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _BottomCta({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: GestureDetector(
-        onTapDown: (_) => setState(() => _scale = 0.96),
-        onTapUp: (_) {
-          setState(() => _scale = 1.0);
-          widget.onTap();
-        },
-        onTapCancel: () => setState(() => _scale = 1.0),
-        child: AnimatedScale(
-          scale: _scale,
-          duration: const Duration(milliseconds: 120),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-            margin: const EdgeInsets.symmetric(horizontal: 24),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+      decoration: BoxDecoration(
+        color: _hubBackground,
+        border: Border(
+          top: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
+        ),
+      ),
+      child: Material(
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  widget.color.withValues(alpha: 0.25),
-                  AppColors.surface,
-                ],
-              ),
               border: Border.all(
-                color: widget.color.withValues(alpha: 0.30),
-                width: 1,
+                color: _accentViolet.withValues(alpha: 0.5),
+                width: 1.5,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: widget.color.withValues(alpha: 0.15),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+              color: _accentViolet.withValues(alpha: 0.10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.play_arrow_rounded,
+                    color: _accentViolet, size: 22),
+                const SizedBox(width: 8),
+                Text(
+                  AppStrings.gameHubCtaSesion,
+                  style: TextStyle(
+                    color: _accentViolet,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(widget.icon, color: widget.color, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      widget.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: widget.color.withValues(alpha: 0.20),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      widget.countText,
-                      style: TextStyle(
-                        color: widget.color,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
