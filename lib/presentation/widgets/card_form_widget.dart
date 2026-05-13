@@ -6,31 +6,33 @@ import '../../core/constants/app_strings.dart';
 import '../../data/models/carta_personalizada_model.dart';
 import '../../domain/entities/carta_personalizada.dart';
 import '../providers/libre_providers.dart';
+import 'card_editor/card_preview_widget.dart';
+import 'card_editor/category_selector_widget.dart';
+import 'card_editor/cta_button_widget.dart';
+import 'card_editor/level_selector_widget.dart';
+import 'card_editor/texto_field_widget.dart';
+import 'card_editor/time_selector_widget.dart';
 
 // ---------------------------------------------------------------------------
 // CardFormWidget
 // ---------------------------------------------------------------------------
 
-/// Formulario reutilizable para crear o editar cartas personalizadas.
+/// Formulario reutilizable para crear o editar cartas personalizadas, con
+/// estilo gaming inmersivo (vista previa en vivo, selectores visuales, glow).
 ///
 /// En create mode (cuando [existingCard] es `null`) genera un nuevo ID.
 /// En edit mode pre-popula los campos desde [existingCard].
 /// Al guardar persiste a [personalizadasBoxProvider2] y llama a [onSaved].
 ///
-/// Campos:
-/// - **texto** (instrucción) — TextFormField obligatorio
-/// - **categoria** — DropdownButtonFormField (Verdad/Reto/Deseo/Sin Límites)
-/// - **nivel** — DropdownButtonFormField (Suave/Picante/Intenso)
-/// - **tiempoSegundos** — TextFormField numérico opcional
-/// - **dirigida** — TextFormField opcional
+/// Compone 6 sub-widgets bajo `card_editor/`:
+/// - CardPreviewWidget, CategorySelector, LevelSelector, TimeSelector,
+///   GamingTextField (x2), CtaButtonWidget
 class CardFormWidget extends ConsumerStatefulWidget {
   /// Si se provee, el formulario arranca en edit mode con los datos
   /// pre-cargados. Si es `null`, arranca en create mode vacío.
   final CartaPersonalizada? existingCard;
 
   /// Callback invocado después de persistir exitosamente la carta.
-  /// En create mode el padre podría cerrar la pantalla, en edit mode
-  /// podría hacer pop de la ruta.
   final VoidCallback? onSaved;
 
   const CardFormWidget({super.key, this.existingCard, this.onSaved});
@@ -42,10 +44,10 @@ class CardFormWidget extends ConsumerStatefulWidget {
 class _CardFormWidgetState extends ConsumerState<CardFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _textoController = TextEditingController();
+  final _dirigidaController = TextEditingController();
   String? _categoria;
   String _nivel = 'suave';
-  final _tiempoController = TextEditingController();
-  final _dirigidaController = TextEditingController();
+  int? _tiempoSegundos;
   bool _isSaving = false;
 
   // ── Lifecycle ──────────────────────────────────────────────────
@@ -53,22 +55,32 @@ class _CardFormWidgetState extends ConsumerState<CardFormWidget> {
   @override
   void initState() {
     super.initState();
+    _textoController.addListener(_onFieldChanged);
+    _dirigidaController.addListener(_onFieldChanged);
     if (widget.existingCard != null) {
-      final c = widget.existingCard!;
-      _textoController.text = c.texto;
-      _categoria = c.categoria;
-      _nivel = c.nivel;
-      _tiempoController.text = c.tiempoSegundos?.inSeconds.toString() ?? '';
-      _dirigidaController.text = c.dirigida ?? '';
+      _populateFromExisting(widget.existingCard!);
     }
   }
 
   @override
   void dispose() {
+    _textoController.removeListener(_onFieldChanged);
+    _dirigidaController.removeListener(_onFieldChanged);
     _textoController.dispose();
-    _tiempoController.dispose();
     _dirigidaController.dispose();
     super.dispose();
+  }
+
+  void _onFieldChanged() {
+    setState(() {});
+  }
+
+  void _populateFromExisting(CartaPersonalizada c) {
+    _textoController.text = c.texto;
+    _categoria = c.categoria;
+    _nivel = c.nivel;
+    _tiempoSegundos = c.tiempoSegundos?.inSeconds;
+    _dirigidaController.text = c.dirigida ?? '';
   }
 
   // ── Save action ────────────────────────────────────────────────
@@ -87,8 +99,8 @@ class _CardFormWidgetState extends ConsumerState<CardFormWidget> {
         texto: _textoController.text.trim(),
         categoria: _categoria,
         nivel: _nivel,
-        tiempoSegundos: int.tryParse(_tiempoController.text.trim()) != null
-            ? Duration(seconds: int.parse(_tiempoController.text.trim()))
+        tiempoSegundos: _tiempoSegundos != null && _tiempoSegundos! > 5
+            ? Duration(seconds: _tiempoSegundos!)
             : null,
         dirigida: _dirigidaController.text.trim().isEmpty
             ? null
@@ -121,111 +133,92 @@ class _CardFormWidgetState extends ConsumerState<CardFormWidget> {
     final isEdit = widget.existingCard != null;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ── Texto / Instrucción ──────────────────────────
-            TextFormField(
-              controller: _textoController,
-              decoration: InputDecoration(
-                labelText: AppStrings.libreInstruccionLabel,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: AppColors.surface,
+            // ── Preview ──────────────────────────────────────────
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CardPreviewWidget(
+                texto: _textoController.text,
+                categoria: _categoria,
+                nivel: _nivel,
+                tiempoSegundos: _tiempoSegundos,
+                dirigida: _dirigidaController.text,
               ),
-              maxLines: 3,
-              validator: (v) => (v == null || v.trim().isEmpty)
-                  ? AppStrings.libreInstruccionRequired
-                  : null,
             ),
             const SizedBox(height: 16),
 
-            // ── Categoría ────────────────────────────────────
-            DropdownButtonFormField<String>(
-              initialValue: _categoria,
-              decoration: InputDecoration(
-                labelText: AppStrings.libreCategoriaLabel,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: AppColors.surface,
+            // ── Instrucción ──────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GamingTextField(
+                controller: _textoController,
+                label: AppStrings.libreInstruccionLabel,
+                maxLines: 3,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? AppStrings.libreInstruccionRequired
+                    : null,
               ),
-              items: const [
-                DropdownMenuItem(value: 'verdad', child: Text('Verdad')),
-                DropdownMenuItem(value: 'reto', child: Text('Reto')),
-                DropdownMenuItem(value: 'deseo', child: Text('Deseo')),
-                DropdownMenuItem(
-                    value: 'sinLimites', child: Text('Sin Límites')),
-              ],
-              onChanged: (v) => setState(() => _categoria = v),
             ),
             const SizedBox(height: 16),
 
-            // ── Nivel ────────────────────────────────────────
-            DropdownButtonFormField<String>(
-              initialValue: _nivel,
-              decoration: InputDecoration(
-                labelText: AppStrings.libreNivelLabel,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: AppColors.surface,
+            // ── Categoría ────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CategorySelector(
+                selected: _categoria,
+                onChanged: (v) => setState(() => _categoria = v),
               ),
-              items: const [
-                DropdownMenuItem(value: 'suave', child: Text('Suave')),
-                DropdownMenuItem(value: 'picante', child: Text('Picante')),
-                DropdownMenuItem(value: 'intenso', child: Text('Intenso')),
-              ],
-              onChanged: (v) {
-                if (v != null) setState(() => _nivel = v);
-              },
             ),
             const SizedBox(height: 16),
 
-            // ── Tiempo (segundos) ────────────────────────────
-            TextFormField(
-              controller: _tiempoController,
-              decoration: InputDecoration(
-                labelText: AppStrings.libreTiempoLabel,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: AppColors.surface,
+            // ── Nivel ────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: LevelSelector(
+                selected: _nivel,
+                onChanged: (v) => setState(() => _nivel = v),
               ),
-              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
 
-            // ── Dirigida a ───────────────────────────────────
-            TextFormField(
-              controller: _dirigidaController,
-              decoration: InputDecoration(
-                labelText: AppStrings.libreDirigidaLabel,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: AppColors.surface,
+            // ── Tiempo ───────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TimeSelector(
+                seconds: _tiempoSegundos,
+                onChanged: (v) => setState(() => _tiempoSegundos = v),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // ── Dirigida a ───────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GamingTextField(
+                controller: _dirigidaController,
+                label: AppStrings.libreDirigidaLabel,
               ),
             ),
             const SizedBox(height: 24),
 
-            // ── Save button ──────────────────────────────────
-            ElevatedButton(
-              onPressed: _isSaving ? null : _save,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+            // ── CTA ──────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CtaButtonWidget(
+                label: isEdit
+                    ? AppStrings.libreGuardarCarta
+                    : AppStrings.libreGuardarCarta,
+                isLoading: _isSaving,
+                onPressed: _isSaving ? null : _save,
               ),
-              child: _isSaving
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(
-                      isEdit
-                          ? AppStrings.libreGuardarCarta
-                          : AppStrings.libreGuardarCarta,
-                    ),
             ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

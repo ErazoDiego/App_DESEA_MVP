@@ -11,6 +11,12 @@ import 'package:desea_mvp/hive_registrar.g.dart';
 import 'package:desea_mvp/presentation/providers/mazo_providers.dart';
 import 'package:desea_mvp/presentation/providers/libre_providers.dart';
 import 'package:desea_mvp/presentation/screens/game/libre_screen.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/card_preview_widget.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/category_selector_widget.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/level_selector_widget.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/time_selector_widget.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/texto_field_widget.dart';
+import 'package:desea_mvp/presentation/widgets/card_editor/cta_button_widget.dart';
 import 'package:desea_mvp/core/constants/app_strings.dart';
 
 // ---------------------------------------------------------------------------
@@ -61,7 +67,8 @@ class _FakePersBox extends Box<CartaPersonalizadaModel> {
       _map.values;
 
   @override
-  CartaPersonalizadaModel? get(dynamic key, {CartaPersonalizadaModel? defaultValue}) =>
+  CartaPersonalizadaModel? get(dynamic key,
+          {CartaPersonalizadaModel? defaultValue}) =>
       _map[key] ?? defaultValue;
 
   @override
@@ -95,8 +102,7 @@ class _FakePersBox extends Box<CartaPersonalizadaModel> {
   }
 
   @override
-  Future<Iterable<int>> addAll(
-      Iterable<CartaPersonalizadaModel> values) async {
+  Future<Iterable<int>> addAll(Iterable<CartaPersonalizadaModel> values) async {
     final indices = <int>[];
     for (final v in values) {
       indices.add(await add(v));
@@ -206,6 +212,16 @@ List<Mazo> _buildTestMazos() {
   ];
 }
 
+/// Tall screen so CardFormWidget fields + CTA fit without scrolling.
+Future<void> _setTallScreen(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1080, 2400);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(() {
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -220,9 +236,6 @@ void main() {
   });
 
   tearDownAll(() {
-    // On Linux, deleteSync works even with open file descriptors.
-    // Skip explicit Hive.close() — it can hang if boxes have pending
-    // operations from rapid test cycles.
     if (tempDir.existsSync()) {
       tempDir.deleteSync(recursive: true);
     }
@@ -297,7 +310,6 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Level is displayed as uppercase badge on the card back placeholder
       expect(find.text('SUAVE'), findsOneWidget);
       expect(find.text('INTENSO'), findsOneWidget);
     });
@@ -320,20 +332,14 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Main FAB button exists
       expect(find.byKey(const Key('fab_expandable_main')), findsOneWidget);
-
-      // Before expansion, menu options are NOT in the widget tree
-      // (they live in an OverlayEntry that hasn't been created yet)
       expect(find.text(AppStrings.libreCrearMazo), findsNothing);
       expect(find.text(AppStrings.libreCrearCartaPers), findsNothing);
 
-      // Tap main FAB to expand
       await tester.tap(find.byKey(const Key('fab_expandable_main')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 350));
 
-      // After expand, both options are present and tappable
       expect(find.text(AppStrings.libreCrearMazo), findsOneWidget);
       expect(find.text(AppStrings.libreCrearCartaPers), findsOneWidget);
     });
@@ -354,12 +360,10 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Expand FAB
       await tester.tap(find.byKey(const Key('fab_expandable_main')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
-      // Tap Crear mazo
       await tester.tap(find.text(AppStrings.libreCrearMazo));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
@@ -387,18 +391,18 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Expand FAB
       await tester.tap(find.byKey(const Key('fab_expandable_main')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
-      // Tap Crear carta
       await tester.tap(find.text(AppStrings.libreCrearCartaPers));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
+      // Gaming form has the gaming sub-widgets
       expect(find.text(AppStrings.libreInstruccionLabel), findsOneWidget);
-      expect(find.text(AppStrings.libreCategoriaLabel), findsOneWidget);
+      expect(find.byType(CardPreviewWidget), findsOneWidget);
+      expect(find.byType(CategorySelector), findsOneWidget);
     });
   });
 
@@ -418,7 +422,6 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Expand FAB → tap Crear mazo
       await tester.tap(find.byKey(const Key('fab_expandable_main')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
@@ -448,7 +451,10 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
     }
 
-    testWidgets('shows all form fields via CardFormWidget', (tester) async {
+    testWidgets('shows gaming sub-widgets via CardFormWidget',
+        (tester) async {
+      await _setTallScreen(tester);
+
       final mazos = <Mazo>[];
       final fakeRepo = FakeMazoRepository(mazos);
       final testPersBox = _FakePersBox();
@@ -467,14 +473,18 @@ void main() {
 
       await _expandFabAndTapCrearCarta(tester);
 
+      // Gaming form sub-widgets
       expect(find.text(AppStrings.libreInstruccionLabel), findsOneWidget);
-      expect(find.text(AppStrings.libreCategoriaLabel), findsOneWidget);
-      expect(find.text(AppStrings.libreNivelLabel), findsOneWidget);
-      expect(find.text(AppStrings.libreTiempoLabel), findsOneWidget);
       expect(find.text(AppStrings.libreDirigidaLabel), findsOneWidget);
+      expect(find.byType(CardPreviewWidget), findsOneWidget);
+      expect(find.byType(CategorySelector), findsOneWidget);
+      expect(find.byType(LevelSelector), findsOneWidget);
+      expect(find.byType(TimeSelector), findsOneWidget);
     });
 
     testWidgets('validates required fields on save', (tester) async {
+      await _setTallScreen(tester);
+
       final mazos = <Mazo>[];
       final fakeRepo = FakeMazoRepository(mazos);
       final testPersBox = _FakePersBox();
@@ -493,18 +503,24 @@ void main() {
 
       await _expandFabAndTapCrearCarta(tester);
 
+      // Tap save button (ensure visible first)
+      await tester.ensureVisible(find.text(AppStrings.libreGuardarCarta));
+      await tester.pump();
       await tester.tap(find.text(AppStrings.libreGuardarCarta));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // CardFormWidget only validates the texto field (instrucción)
-      expect(find.text(AppStrings.libreInstruccionRequired), findsOneWidget);
+      expect(
+        find.text(AppStrings.libreInstruccionRequired),
+        findsOneWidget,
+      );
     });
 
     testWidgets('saves card and persists to box', (tester) async {
+      await _setTallScreen(tester);
+
       final mazos = <Mazo>[];
       final fakeRepo = FakeMazoRepository(mazos);
-
       final testPersBox = _FakePersBox();
 
       await tester.pumpWidget(
@@ -521,16 +537,19 @@ void main() {
 
       await _expandFabAndTapCrearCarta(tester);
 
-      // CardFormWidget has a single TextFormField for texto
-      await tester.enterText(
-        find.byType(TextFormField).first,
-        'Hacé algo divertido',
-      );
+      // Enter texto
+      final textFields = find.byType(TextFormField);
+      await tester.ensureVisible(textFields.first);
+      await tester.pump();
+      await tester.enterText(textFields.first, 'Hacé algo divertido');
       await tester.pump();
 
+      // Tap save
+      await tester.ensureVisible(find.text(AppStrings.libreGuardarCarta));
+      await tester.pump();
       await tester.tap(find.text(AppStrings.libreGuardarCarta));
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text(AppStrings.libreCartaCreada), findsOneWidget);
       expect(testPersBox.values.length, 1);

@@ -1,0 +1,26 @@
+change: card-editor-gaming
+status: archived
+date: "2026-05-13"
+summary: >
+  Redesigned CardFormWidget from Material form to immersive gaming card-creation
+  experience with live preview and 6 sub-widgets (card_preview, category_selector,
+  level_selector, time_selector, texto_field, cta_button). 10/10 tasks completed.
+  322 tests passing. 15/16 spec scenarios compliant.
+artifacts:
+  engram:
+    proposal: observation #151
+    design: observation #153
+    spec: filesystem only
+    tasks: observation #157
+    apply_progress: observation #158
+    verify_report: observation #160
+  files:
+    proposal: openspec/changes/archive/2026-05-13-card-editor-gaming/proposal.md
+    design: openspec/changes/archive/2026-05-13-card-editor-gaming/design.md
+    spec: openspec/changes/archive/2026-05-13-card-editor-gaming/specs/card-editor/spec.md
+    tasks: openspec/changes/archive/2026-05-13-card-editor-gaming/tasks.md
+    apply_summary: openspec/changes/archive/2026-05-13-card-editor-gaming/apply-summary.md
+    verify_report: openspec/changes/archive/2026-05-13-card-editor-gaming/verify-report.md
+main_specs_updated:
+  - openspec/specs/card-editor.md
+last_updated: "2026-05-13"
