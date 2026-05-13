@@ -279,7 +279,7 @@ class AppStrings {
   static const String misCartasHubTitle = 'Mis cartas';
 
   /// Título de la pantalla de creación de carta personalizada.
-  static const String misCartasFormCreateTitle = 'Crear carta personalizada';
+  static const String misCartasFormCreateTitle = 'Crear carta';
 
   /// Título de la pantalla de edición de carta personalizada.
   static const String misCartasFormEditTitle = 'Editar carta personalizada';

@@ -430,12 +430,12 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
-      expect(find.byType(TextField), findsOneWidget);
+      expect(find.text(AppStrings.libreDeckNameHint), findsOneWidget);
       expect(find.text('Todas'), findsOneWidget);
       expect(find.text('Originales'), findsOneWidget);
       expect(find.text('Guardadas'), findsOneWidget);
       expect(find.text('Creadas'), findsOneWidget);
-      expect(find.textContaining('Añadir'), findsOneWidget);
+      expect(find.textContaining('Crear mazo'), findsOneWidget);
     });
   });
 

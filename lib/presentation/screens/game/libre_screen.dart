@@ -10,7 +10,9 @@ import '../../../domain/repositories/mazo_repository.dart';
 import '../../providers/mazo_providers.dart';
 import '../../providers/sesion_providers.dart';
 import '../../providers/libre_providers.dart';
+import '../../widgets/card_editor/texto_field_widget.dart';
 import '../../widgets/card_form_widget.dart';
+import '../../widgets/deck_builder_card_tile.dart';
 import '../../widgets/deck_card_grid.dart';
 
 // ---------------------------------------------------------------------------
@@ -29,6 +31,9 @@ class _CardSourceItem {
   final String texto;
   final String tipoLabel;
   final String source; // 'original' | 'guardada' | 'creada'
+  final String? categoria; // para color: verdad/reto/deseo/sinLimites
+  final int? tiempoSegundos;
+  final String? imagenUrl;
   bool isSelected;
 
   _CardSourceItem({
@@ -36,6 +41,9 @@ class _CardSourceItem {
     required this.texto,
     required this.tipoLabel,
     required this.source,
+    this.categoria,
+    this.tiempoSegundos,
+    this.imagenUrl,
     this.isSelected = false,
   });
 }
@@ -56,6 +64,7 @@ class LibreScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<LibreScreen> createState() => _LibreScreenState();
 }
+
 
 class _LibreScreenState extends ConsumerState<LibreScreen> {
   LibreView _currentView = LibreView.deckList;
@@ -134,6 +143,9 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
           texto: carta.texto,
           tipoLabel: carta.tipo.name,
           source: 'original',
+          categoria: carta.tipo.name,
+          tiempoSegundos: carta.tiempoSegundos?.inSeconds,
+          imagenUrl: carta.imagenUrl,
           isSelected: _selectedCardIds.contains(carta.id),
         ));
       }
@@ -149,6 +161,9 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
           texto: carta.texto,
           tipoLabel: carta.tipo.name,
           source: 'guardada',
+          categoria: carta.tipo.name,
+          tiempoSegundos: carta.tiempoSegundos?.inSeconds,
+          imagenUrl: carta.imagenUrl,
           isSelected: _selectedCardIds.contains(model.cartaId),
         ));
       }
@@ -164,6 +179,9 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
           texto: entity.texto,
           tipoLabel: entity.categoria ?? 'personalizada',
           source: 'creada',
+          categoria: entity.categoria,
+          tiempoSegundos: entity.tiempoSegundos?.inSeconds,
+          imagenUrl: entity.imagenUrl,
           isSelected: _selectedCardIds.contains(entity.id),
         ));
       }
@@ -282,6 +300,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appBarTitle),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -398,45 +417,117 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
     );
   }
 
-  // ── View 2: Card Builder ───────────────────────────────────────
+  // ── View 2: Card Builder (gaming deck builder) ──────────────────
+
+  static const _filterPills = <_FilterPill>[
+    _FilterPill('Todas', Icons.auto_awesome_mosaic),
+    _FilterPill('Originales', Icons.whatshot),
+    _FilterPill('Guardadas', Icons.bookmark),
+    _FilterPill('Creadas', Icons.edit),
+  ];
 
   Widget _buildCardBuilderView() {
+    final selectedCount = _selectedCardIds.length;
+
     return Column(
       children: [
-        // Deck name field
+        // ── Header ───────────────────────────────────────────────
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TextField(
-            controller: _deckNameController,
-            decoration: InputDecoration(
-              hintText: AppStrings.libreDeckNameHint,
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: AppColors.surface,
-            ),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
+          child: Column(
+            children: [
+              Text(
+                'Construí tu mazo',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Seleccioná las cartas para tu deck',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
+              ),
+            ],
           ),
         ),
 
-        // Filter chips (replaces TabBar to avoid Column overflow in
-        // IndexedStack)
+        // ── Deck name ────────────────────────────────────────────
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: GamingTextField(
+            controller: _deckNameController,
+            label: AppStrings.libreDeckNameHint,
+          ),
+        ),
+
+        // ── Gaming filter pills ──────────────────────────────────
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: ['Todas', 'Originales', 'Guardadas', 'Creadas']
-                  .map((label) {
-                final isSelected = _cardFilter == label;
+              children: _filterPills.map((pill) {
+                final isSelected = _cardFilter == pill.label;
                 return Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(label),
-                    selected: isSelected,
-                    onSelected: (_) {
-                      setState(() => _cardFilter = label);
-                    },
-                    selectedColor:
-                        AppColors.fuchsiaAccent.withValues(alpha: 0.2),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () => setState(() => _cardFilter = pill.label),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeOut,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.fuchsiaAccent
+                                      .withValues(alpha: 0.5)
+                                  : Colors.white.withValues(alpha: 0.1),
+                            ),
+                            color: isSelected
+                                ? AppColors.fuchsiaAccent
+                                    .withValues(alpha: 0.15)
+                                : Colors.white.withValues(alpha: 0.04),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                pill.icon,
+                                size: 14,
+                                color: isSelected
+                                    ? AppColors.fuchsiaAccent
+                                    : Colors.white.withValues(alpha: 0.6),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                pill.label,
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? AppColors.fuchsiaAccent
+                                      : Colors.white.withValues(alpha: 0.6),
+                                  fontSize: 13,
+                                  fontWeight:
+                                      isSelected ? FontWeight.w600 : FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 );
               }).toList(),
@@ -444,7 +535,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
           ),
         ),
 
-        // Card list
+        // ── Card grid ────────────────────────────────────────────
         Expanded(
           child: _isLoadingCards
               ? const Center(child: CircularProgressIndicator())
@@ -457,19 +548,31 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
                             ),
                       ),
                     )
-                  : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                  : GridView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 0.80,
+                      ),
                       itemCount: _filteredItems.length,
                       itemBuilder: (context, index) {
                         final item = _filteredItems[index];
-                        return CheckboxListTile(
-                          value: item.isSelected,
-                          title: Text(item.texto, maxLines: 2),
-                          subtitle: Text(item.tipoLabel.toUpperCase()),
-                          onChanged: (value) {
+                        return DeckBuilderCardTile(
+                          texto: item.texto,
+                          categoria: item.categoria,
+                          tiempoSegundos: item.tiempoSegundos,
+                          imagenUrl: item.imagenUrl,
+                          isSelected: item.isSelected,
+                          onTap: () {
                             setState(() {
-                              item.isSelected = value ?? false;
-                              if (value == true) {
+                              item.isSelected = !item.isSelected;
+                              if (item.isSelected) {
                                 _selectedCardIds.add(item.id);
                               } else {
                                 _selectedCardIds.remove(item.id);
@@ -481,18 +584,151 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
                     ),
         ),
 
-        // Añadir button
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _selectedCardIds.isEmpty ? null : _saveDeck,
-              child: Text('Añadir ${_selectedCardIds.length} cartas al mazo'),
+        // ── Bottom bar: preview + CTA ───────────────────────────
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface.withValues(alpha: 0.95),
+            border: Border(
+              top: BorderSide(
+                color: AppColors.fuchsiaAccent.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Row(
+                children: [
+                  // Selected count with icon
+                  if (selectedCount > 0) ...[
+                    Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.fuchsiaAccent.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$selectedCount',
+                          style: TextStyle(
+                            color: AppColors.fuchsiaAccent,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${selectedCount == 1 ? 'carta' : 'cartas'} seleccionadas',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.6),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ] else
+                    Text(
+                      'Seleccioná cartas para tu deck',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        fontSize: 12,
+                      ),
+                    ),
+
+                  const Spacer(),
+
+                  // CTA button
+                  _DeckCtaButton(
+                    selectedCount: selectedCount,
+                    onPressed: _selectedCardIds.isEmpty ? null : _saveDeck,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+// ── Filter pill data ─────────────────────────────────────────────
+
+class _FilterPill {
+  final String label;
+  final IconData icon;
+  const _FilterPill(this.label, this.icon);
+}
+
+// ── Gaming CTA button ───────────────────────────────────────────
+
+class _DeckCtaButton extends StatelessWidget {
+  final int selectedCount;
+  final VoidCallback? onPressed;
+
+  const _DeckCtaButton({required this.selectedCount, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final isEnabled = selectedCount > 0;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: isEnabled ? onPressed : null,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient: isEnabled
+                  ? const LinearGradient(
+                      colors: [Color(0xFFA21CAF), Color(0xFF7C3AED)],
+                    )
+                  : LinearGradient(
+                      colors: [
+                        Colors.white.withValues(alpha: 0.05),
+                        Colors.white.withValues(alpha: 0.05),
+                      ],
+                    ),
+              boxShadow: isEnabled
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFFA21CAF).withValues(alpha: 0.35),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  selectedCount > 0
+                      ? '✨ Añadir $selectedCount'
+                      : 'Crear mazo',
+                  style: TextStyle(
+                    color: isEnabled ? Colors.white : Colors.white.withValues(alpha: 0.3),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -87,122 +87,126 @@ class CardPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 0.68,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              _accentColor.withValues(alpha: 0.55),
-              AppColors.surface,
+    return Center(
+      child: SizedBox(
+        width: 220,
+        height: 320,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                _accentColor.withValues(alpha: 0.55),
+                AppColors.surface,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: _accentColor.withValues(alpha: 0.25),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
             ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: _accentColor.withValues(alpha: 0.25),
-              blurRadius: 14,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ── Top: category icon + color ──────────────────────
-              Row(
-                children: [
-                  Icon(
-                    _categoryIcon,
-                    size: 20,
-                    color: _accentColor,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    _tipoLabel.toUpperCase(),
-                    style: TextStyle(
-                      color: _accentColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                ],
-              ),
-
-              const Spacer(),
-
-              // ── Center: texto ──────────────────────────────────
-              if (texto.isNotEmpty)
-                Text(
-                  texto,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    height: 1.4,
-                  ),
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                )
-              else
-                Text(
-                  'Escribí la instrucción...',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    fontSize: 15,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-
-              const Spacer(),
-
-              // ── Bottom: level dot + time badge ─────────────────
-              Row(
-                children: [
-                  // Level dot
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _levelColor,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    nivel[0].toUpperCase() + nivel.substring(1),
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.7),
-                      fontSize: 11,
-                    ),
-                  ),
-                  const Spacer(),
-                  // Time badge
-                  if (tiempoSegundos != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            child: Column(
+              children: [
+                // ── Top: category centered ─────────────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(_categoryIcon, size: 16, color: _accentColor),
+                    const SizedBox(width: 4),
+                    Flexible(
                       child: Text(
-                        '${tiempoSegundos}s',
+                        _tipoLabel.toUpperCase(),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: 11,
+                          color: _accentColor,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.2,
                         ),
                       ),
                     ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+
+                const Spacer(),
+
+                // ── Center: texto centrado, crece desde el centro ──
+                if (texto.isNotEmpty)
+                  Text(
+                    texto,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      height: 1.3,
+                    ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                else
+                  Text(
+                    'Escribí la\ninstrucción...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      fontSize: 13,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+
+                const Spacer(),
+
+                // ── Bottom: level + time centrado ──────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: _levelColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      nivel[0].toUpperCase() + nivel.substring(1),
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        fontSize: 10,
+                      ),
+                    ),
+                    if (tiempoSegundos != null) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          '${tiempoSegundos}s',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.7),
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
