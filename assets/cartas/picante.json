@@ -1,0 +1,51 @@
+[
+  {
+    "id": "picante_01",
+    "tipo": "verdad",
+    "texto": "¿Cuál es tu fantasía más recurrente con tu pareja?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_02",
+    "tipo": "reto",
+    "texto": "Dale un beso en el cuello a tu pareja y mantenelo 10 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 10
+  },
+  {
+    "id": "picante_03",
+    "tipo": "verdad",
+    "texto": "¿Qué parte del cuerpo de tu pareja te vuelve loco?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_04",
+    "tipo": "reto",
+    "texto": "Susurrale algo al oído a tu pareja.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_05",
+    "tipo": "deseo",
+    "texto": "Elegí una prenda de tu pareja para sacarle.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_06",
+    "tipo": "verdad",
+    "texto": "¿Cuál es la experiencia más atrevida que te gustaría tener?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_07",
+    "tipo": "reto",
+    "texto": "Bailá una canción lenta con tu pareja durante 1 minuto.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 60
+  }
+]

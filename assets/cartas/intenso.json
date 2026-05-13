@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intenso_01",
+    "tipo": "deseo",
+    "texto": "Describí en detalle lo que harías si tuvieran la noche completamente solos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_02",
+    "tipo": "reto",
+    "texto": "Apagá las luces y quedate solo con la luz de las velas los próximos 5 minutos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 300
+  },
+  {
+    "id": "intenso_03",
+    "tipo": "deseo",
+    "texto": "Elegí una parte del cuerpo de tu pareja para besar durante 1 minuto.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "intenso_04",
+    "tipo": "verdad",
+    "texto": "¿Qué secreto no le has contado todavía a tu pareja?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_05",
+    "tipo": "deseo",
+    "texto": "Dejá que tu pareja te guíe con los ojos cerrados durante 2 minutos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "intenso_06",
+    "tipo": "reto",
+    "texto": "Confesale a tu pareja algo que siempre quisiste probar y nunca te animaste.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  }
+]

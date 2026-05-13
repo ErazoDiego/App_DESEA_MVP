@@ -1,0 +1,44 @@
+[
+  {
+    "id": "suave_01",
+    "tipo": "verdad",
+    "texto": "¿Cuál es tu recuerdo favorito de los dos hasta ahora?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_02",
+    "tipo": "reto",
+    "texto": "Abrazá a tu pareja durante 30 segundos sin hablar.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "suave_03",
+    "tipo": "verdad",
+    "texto": "¿Qué fue lo primero que pensaste cuando conociste a tu pareja?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_04",
+    "tipo": "reto",
+    "texto": "Mirá a tu pareja a los ojos durante 20 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 20
+  },
+  {
+    "id": "suave_05",
+    "tipo": "verdad",
+    "texto": "¿Cuál es tu lugar favorito para estar con tu pareja?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_06",
+    "tipo": "reto",
+    "texto": "Tomate de la mano y no te sueltes durante toda la ronda.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  }
+]

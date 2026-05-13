@@ -1,0 +1,16 @@
+[
+  {
+    "id": "cierre_01",
+    "tipo": "deseo",
+    "texto": "Mirense a los ojos y tómense de las manos. No hay nada más que hacer. El momento es de ustedes.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "cierre_02",
+    "tipo": "deseo",
+    "texto": "Lo que sea que estén sintiendo ahora mismo, no lo dejen pasar. Esta noche fue de ustedes. Lo que sigue también. No hay instrucción. Solo el momento.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  }
+]
