@@ -19,4 +19,7 @@ class GamingColorTokens {
 
   /// Violet — Sin Límites category.
   static const Color violet = Color(0xFF7C3AED);
+
+  /// Azul — Guardadas library section.
+  static const Color azul = Color(0xFF2563EB);
 }

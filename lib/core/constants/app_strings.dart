@@ -119,6 +119,15 @@ class AppStrings {
   static const String modoExplicacion =
       'Sesión: 20 cartas con arco progresivo. Libre: armá tu propio mazo.';
 
+  /// Título de la sección "Tu colección" en el hub.
+  static const String gameHubColeccionSection = 'Tu colección';
+
+  /// Subtítulo de inmersión mostrado en la sección hero del hub.
+  static const String gameHubImmersionSubtitle = 'La noche empieza acá';
+
+  /// Texto del CTA en la sección hero para empezar una sesión.
+  static const String gameHubCtaSesion = 'Empezar sesión';
+
   // ─────────────────────────────────────────────────────────────
   // Session Mode
   // ─────────────────────────────────────────────────────────────

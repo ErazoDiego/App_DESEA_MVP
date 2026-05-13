@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:desea_mvp/data/datasources/hive_datasource.dart';
 import 'package:desea_mvp/data/models/carta_guardada_model.dart';
+import 'package:desea_mvp/data/models/carta_personalizada_model.dart';
 import 'package:desea_mvp/presentation/screens/home/game_hub_screen.dart';
 import 'package:desea_mvp/core/constants/app_strings.dart';
 import '../../../helpers/fake_guardadas_box.dart';
@@ -10,11 +11,14 @@ import '../../../helpers/fake_personalizadas_box.dart';
 
 /// Builds a [GameHubScreen] wrapped in a [ProviderScope] with fake
 /// [guardadasBoxProvider] and [personalizadasBoxProvider].
-Widget buildApp({int savedCardsCount = 0}) {
-  final cards = <dynamic, CartaGuardadaModel>{};
+Widget buildApp({
+  int savedCardsCount = 0,
+  int personalizadasCount = 0,
+}) {
+  final guardadas = <dynamic, CartaGuardadaModel>{};
   for (var i = 0; i < savedCardsCount; i++) {
     final id = 'card_$i';
-    cards[id] = CartaGuardadaModel(
+    guardadas[id] = CartaGuardadaModel(
       id: id,
       cartaId: 'carta_$i',
       tipo: 'verdad',
@@ -24,13 +28,27 @@ Widget buildApp({int savedCardsCount = 0}) {
     );
   }
 
+  final pers = <dynamic, CartaPersonalizadaModel>{};
+  for (var i = 0; i < personalizadasCount; i++) {
+    final id = 'pers_$i';
+    pers[id] = CartaPersonalizadaModel(
+      id: id,
+      texto: 'Carta personalizada $i',
+      categoria: 'deseo',
+      nivel: 'intenso',
+      tiempoSegundos: 30,
+      dirigida: 'ella',
+      creadaEn: DateTime(2026, 5, 13),
+    );
+  }
+
   return ProviderScope(
     overrides: [
       guardadasBoxProvider.overrideWithValue(
-        AsyncValue.data(FakeGuardadasBox(initial: cards)),
+        AsyncValue.data(FakeGuardadasBox(initial: guardadas)),
       ),
       personalizadasBoxProvider.overrideWithValue(
-        AsyncValue.data(FakePersonalizadasBox()),
+        AsyncValue.data(FakePersonalizadasBox(initial: pers)),
       ),
     ],
     child: const MaterialApp(home: GameHubScreen()),
@@ -67,5 +85,49 @@ void main() {
     await tester.pumpWidget(buildApp(savedCardsCount: 0));
 
     expect(find.text('0 guardadas'), findsOneWidget);
+  });
+
+  // ── Hero Section ─────────────────────────────────────────────────
+
+  testWidgets('hero section renders title, subtitle and CTA', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    // Hero title — "DESEA"
+    expect(find.text(AppStrings.appName), findsOneWidget);
+
+    // Hero subtitle — "La noche empieza acá"
+    expect(find.text(AppStrings.gameHubImmersionSubtitle), findsOneWidget);
+
+    // Hero CTA — "Empezar sesión"
+    expect(find.text(AppStrings.gameHubCtaSesion), findsOneWidget);
+  });
+
+  // ── Section Headers ──────────────────────────────────────────────
+
+  testWidgets('renders "Tu colección" section header', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.gameHubColeccionSection), findsOneWidget);
+  });
+
+  testWidgets('renders "Mis cartas" library card', (tester) async {
+    await tester.pumpWidget(buildApp());
+
+    expect(find.text(AppStrings.misCartasHubTitle), findsOneWidget);
+  });
+
+  // ── Personalizadas Count ─────────────────────────────────────────
+
+  testWidgets('shows personalizadas count for Mis Cartas', (tester) async {
+    await tester.pumpWidget(buildApp(personalizadasCount: 5));
+
+    // Mis Cartas card shows count in a badge
+    expect(find.text('5'), findsOneWidget);
+  });
+
+  testWidgets('shows 0 personalizadas when box is empty', (tester) async {
+    await tester.pumpWidget(buildApp(personalizadasCount: 0));
+
+    expect(find.text('0'), findsOneWidget);
   });
 }

@@ -1,0 +1,24 @@
+change: game-hub-redesign
+status: archived
+date: "2026-05-13"
+summary: >
+  Transformed GameHubScreen from a Material ListTile list into an immersive gaming
+  home screen with hero section, per-mode identity cards (Sesión/Libre), library
+  section with live counts, and microinteractions (AnimatedScale, AnimatedContainer).
+  5/5 tasks completed. 327 tests passing.
+artifacts:
+  engram:
+    proposal: observation #172
+    design: observation #174
+    spec: filesystem only
+    tasks: observation #175
+  files:
+    proposal: openspec/changes/archive/2026-05-13-game-hub-redesign/proposal.md
+    design: openspec/changes/archive/2026-05-13-game-hub-redesign/design.md
+    spec: openspec/changes/archive/2026-05-13-game-hub-redesign/specs/game-hub/spec.md
+    tasks: openspec/changes/archive/2026-05-13-game-hub-redesign/tasks.md
+    apply_summary: openspec/changes/archive/2026-05-13-game-hub-redesign/apply-summary.md
+    verify_report: openspec/changes/archive/2026-05-13-game-hub-redesign/verify-report.md
+main_specs_updated:
+  - openspec/specs/game-hub/spec.md
+last_updated: "2026-05-13"
