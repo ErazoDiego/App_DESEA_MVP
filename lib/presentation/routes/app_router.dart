@@ -10,11 +10,11 @@ import '../screens/game/libre_play_screen.dart';
 import '../screens/game/libre_screen.dart';
 import '../screens/game/mis_cartas_screen.dart';
 import '../screens/game/saved_cards_screen.dart';
+import '../screens/game/sesion_confirm_screen.dart';
 import '../screens/game/sesion_screen.dart';
 import '../screens/home/game_hub_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/onboarding/age_screen.dart';
-import '../screens/onboarding/preferences_screen.dart';
 import '../screens/onboarding/ready_screen.dart';
 import '../screens/onboarding/tutorial_screen.dart';
 import '../screens/onboarding/welcome_screen.dart';
@@ -56,10 +56,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const AgeScreen(),
       ),
       GoRoute(
-        path: '/onboarding/preferences',
-        builder: (_, __) => const PreferencesScreen(),
-      ),
-      GoRoute(
         path: '/onboarding/tutorial',
         builder: (_, __) => const TutorialScreen(),
       ),
@@ -74,6 +70,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/game-hub',
         builder: (_, __) => const GameHubScreen(),
+      ),
+      GoRoute(
+        path: '/game/sesion-confirm/:mazoId',
+        builder: (_, state) => SesionConfirmScreen(
+          mazoId: state.pathParameters['mazoId'] ?? '',
+        ),
       ),
       GoRoute(
         path: '/game/sesion/:mazoId',

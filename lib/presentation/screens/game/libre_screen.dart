@@ -12,6 +12,8 @@ import '../../providers/sesion_providers.dart';
 import '../../providers/libre_providers.dart';
 import '../../widgets/card_editor/texto_field_widget.dart';
 import '../../widgets/card_form_widget.dart';
+import '../../widgets/circular_back_button.dart';
+import '../../widgets/collection_card_tile.dart';
 import '../../widgets/deck_builder_card_tile.dart';
 import '../../widgets/deck_card_grid.dart';
 
@@ -301,8 +303,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
       appBar: AppBar(
         title: Text(_appBarTitle),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: CircularBackButton(
           onPressed: () {
             if (_currentView != LibreView.deckList) {
               setState(() => _currentView = LibreView.deckList);

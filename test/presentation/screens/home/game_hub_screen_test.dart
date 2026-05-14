@@ -159,6 +159,6 @@ void main() {
     await tester.pumpWidget(buildApp());
 
     // Back button icon
-    expect(find.byIcon(Icons.arrow_back_ios_new), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_back), findsOneWidget);
   });
 }

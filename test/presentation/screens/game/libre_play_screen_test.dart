@@ -9,6 +9,7 @@ import 'package:desea_mvp/domain/entities/mazo.dart';
 import 'package:desea_mvp/presentation/providers/libre_providers.dart';
 import 'package:desea_mvp/presentation/providers/sesion_providers.dart';
 import 'package:desea_mvp/presentation/screens/game/libre_play_screen.dart';
+import 'package:desea_mvp/presentation/widgets/session/carta_card.dart';
 import 'package:desea_mvp/core/constants/app_strings.dart';
 
 // ---------------------------------------------------------------------------
@@ -233,6 +234,10 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
+      // Flip card to reveal content
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
       expect(
         find.text('¿Cuál es tu mayor fantasía?'),
         findsOneWidget,
@@ -258,6 +263,10 @@ void main() {
       );
       await tester.pump();
       await tester.pumpAndSettle();
+
+      // Flip card to reveal badges and save button
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text('VERDAD'), findsOneWidget);
       expect(find.text(AppStrings.guardar), findsOneWidget);
@@ -307,6 +316,10 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
+      // Flip first card
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
       expect(
         find.text('¿Cuál es tu mayor fantasía?'),
         findsOneWidget,
@@ -314,6 +327,10 @@ void main() {
 
       await tester.tap(find.text(AppStrings.siguiente));
       await tester.pumpAndSettle();
+
+      // New card starts face down — flip it
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text('Hacé una broma'), findsOneWidget);
     });
@@ -338,13 +355,25 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
+      // Flip first card and go to next
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
       await tester.tap(find.text(AppStrings.siguiente));
       await tester.pumpAndSettle();
+
+      // Flip second card
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text('Hacé una broma'), findsOneWidget);
 
       await tester.tap(find.text(AppStrings.anterior));
       await tester.pumpAndSettle();
+
+      // Previous card starts face down again — flip it
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(
         find.text('¿Cuál es tu mayor fantasía?'),
@@ -430,6 +459,10 @@ void main() {
       );
       await tester.pump();
       await tester.pumpAndSettle();
+
+      // Flip card to reveal save button
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       await tester.tap(find.text(AppStrings.guardar));
       await tester.pump();

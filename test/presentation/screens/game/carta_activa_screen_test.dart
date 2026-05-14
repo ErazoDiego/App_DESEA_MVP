@@ -13,6 +13,7 @@ import 'package:desea_mvp/domain/entities/sesion.dart';
 import 'package:desea_mvp/domain/repositories/carta_repository.dart';
 import 'package:desea_mvp/domain/repositories/sesion_repository.dart';
 import 'package:desea_mvp/hive_registrar.g.dart';
+import 'package:desea_mvp/presentation/widgets/session/carta_card.dart';
 import 'package:desea_mvp/presentation/providers/carta_providers.dart';
 import 'package:desea_mvp/presentation/providers/sesion_providers.dart';
 import 'package:desea_mvp/presentation/providers/sesion_state.dart';
@@ -344,9 +345,13 @@ void main() {
       );
       await tester.pump();
 
-      // Start session to see active card with save button
+      // Start session to see active card
       await tester.tap(find.text(AppStrings.iniciarSesion));
       await tester.pumpAndSettle();
+
+      // Flip card to reveal content and save button
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // The CartaCard should show a save button (Guardar)
       expect(find.text(AppStrings.guardar), findsOneWidget);

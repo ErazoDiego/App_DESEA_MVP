@@ -25,9 +25,6 @@ class ReadyScreen extends ConsumerWidget {
         }
 
         final perfil = snapshot.data!;
-        final modo = perfil.settings['modo'] as String?;
-        final modoLabel =
-            modo == 'sesion' ? AppStrings.modoSesion : AppStrings.modoLibre;
 
         return Scaffold(
           body: Center(
@@ -56,22 +53,51 @@ class ReadyScreen extends ConsumerWidget {
                     label: AppStrings.edad,
                     value: '${perfil.edad} ${AppStrings.anyos}',
                   ),
-                  const SizedBox(height: 8),
-                  _SummaryRow(
-                    label: AppStrings.modo,
-                    value: modoLabel,
-                  ),
                   const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final repo = ref.read(perfilRepositoryProvider);
-                      final p = await repo.getPerfil();
-                      final updated =
-                          p.copyWith(onboardingCompletado: true);
-                      await repo.guardarPerfil(updated);
-                      if (context.mounted) context.go('/home');
-                    },
-                    child: Text(AppStrings.empezar),
+                  // "Empezar" — estilo premium fucsia
+                  SizedBox(
+                    width: 200,
+                    child: Material(
+                      elevation: 8,
+                      shadowColor: Colors.black38,
+                      borderRadius: BorderRadius.circular(16),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () async {
+                          final repo = ref.read(perfilRepositoryProvider);
+                          final p = await repo.getPerfil();
+                          final updated =
+                              p.copyWith(onboardingCompletado: true);
+                          await repo.guardarPerfil(updated);
+                          if (context.mounted) context.go('/home');
+                        },
+                        child: Container(
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.fuchsiaAccent,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.fuchsiaAccent
+                                    .withValues(alpha: 0.35),
+                                blurRadius: 16,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            AppStrings.empezar,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

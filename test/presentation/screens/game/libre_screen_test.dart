@@ -295,7 +295,7 @@ void main() {
       expect(find.text('2 cartas'), findsOneWidget);
     });
 
-    testWidgets('shows level badge for each mazo', (tester) async {
+    testWidgets('shows card back image for each mazo', (tester) async {
       final mazos = _buildTestMazos();
       final fakeRepo = FakeMazoRepository(mazos);
 
@@ -310,8 +310,8 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('SUAVE'), findsOneWidget);
-      expect(find.text('INTENSO'), findsOneWidget);
+      // Each mazo should display the card back image
+      expect(find.byType(Image), findsNWidgets(mazos.length));
     });
   });
 

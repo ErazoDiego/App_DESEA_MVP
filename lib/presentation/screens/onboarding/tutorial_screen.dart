@@ -20,7 +20,7 @@ class TutorialScreen extends ConsumerWidget {
             children: [
               Text(
                 AppStrings.comoSeJuega,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: AppColors.fuchsiaAccent,
                       fontWeight: FontWeight.bold,
                     ),
@@ -41,9 +41,42 @@ class TutorialScreen extends ConsumerWidget {
                 description: AppStrings.comodinGesture,
               ),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => context.go('/onboarding/ready'),
-                child: Text(AppStrings.entendido),
+              // "Entendido" — estilo premium fucsia
+              SizedBox(
+                width: 200,
+                child: Material(
+                  elevation: 8,
+                  shadowColor: Colors.black38,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => context.go('/onboarding/ready'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.fuchsiaAccent,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.fuchsiaAccent
+                                .withValues(alpha: 0.35),
+                            blurRadius: 16,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        AppStrings.entendido,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

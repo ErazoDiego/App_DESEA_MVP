@@ -151,16 +151,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
               right: -o * 1.5,
               child: Transform.rotate(
                 angle: 0.045,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _accent.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: _accent.withValues(alpha: 0.15),
-                      width: 0.5,
-                    ),
-                  ),
-                ),
+                child: _GhostCard(darkness: 0.55),
               ),
             ),
             // Ghost card 1 (middle)
@@ -171,16 +162,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
               right: -o * 0.7,
               child: Transform.rotate(
                 angle: -0.025,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _accent.withValues(alpha: 0.25),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: _accent.withValues(alpha: 0.3),
-                      width: 0.5,
-                    ),
-                  ),
-                ),
+                child: _GhostCard(darkness: 0.3),
               ),
             ),
             // Main card (front)
@@ -190,7 +172,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
               top: 4,
               right: 4,
               child: Material(
-                color: Colors.black38,
+                color: Colors.black.withValues(alpha: 0.75),
                 borderRadius: BorderRadius.circular(14),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(14),
@@ -200,7 +182,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
                     child: Icon(
                       Icons.delete_outline,
                       size: 16,
-                      color: Colors.white60,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -214,16 +196,9 @@ class _DeckCardTileState extends State<_DeckCardTile> {
 
   Widget _buildMainCard() {
     return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            _accent.withValues(alpha: 0.55),
-            AppColors.surface,
-          ],
-        ),
         boxShadow: [
           BoxShadow(
             color: _glow,
@@ -232,93 +207,121 @@ class _DeckCardTileState extends State<_DeckCardTile> {
           ),
         ],
       ),
-      child: Column(
+      child: Stack(
         children: [
-          // ── Card back placeholder ──────────────────────────────
-          // 🔄 REEMPLAZAR con Image.asset o Image.network cuando
-          //    el equipo de diseño entregue el dorso de carta real.
-          Expanded(
-            flex: 3,
-            child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Container(
-                color: _accent.withValues(alpha: 0.2),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.auto_awesome_mosaic,
-                        size: 32,
-                        color: Colors.white.withValues(alpha: 0.3),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _labelFor(widget.mazo.nivel).toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.35),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 2.5,
-                        ),
-                      ),
-                    ],
-                  ),
+          // ── Full card back image covering the entire card ──────
+          Positioned.fill(
+            child: Image.asset(
+              'assets/cartas/dorso-carta1.jpg',
+              fit: BoxFit.cover,
+              // Tinte fucsia para neutralizar el verde del dorso y
+              // que combine con la identidad visual de la app
+              color: const Color(0xFFFF40FF).withValues(alpha: 0.4),
+              colorBlendMode: BlendMode.overlay,
+            ),
+          ),
+          // ── Gradient overlay at bottom for text readability ────
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.8),
+                  ],
+                  stops: const [0.35, 1.0],
                 ),
               ),
             ),
           ),
-          // ── Info section ───────────────────────────────────────
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.mazo.nombre,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+          // ── Info section overlaid at the bottom ────────────────
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 46,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.mazo.nombre,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      size: 12,
+                      color: _accent,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.auto_awesome,
-                        size: 12,
+                    const SizedBox(width: 5),
+                    Text(
+                      '${widget.mazo.cartaIds.length} cartas',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
                         color: _accent,
+                        shape: BoxShape.circle,
                       ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${widget.mazo.cartaIds.length} cartas',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: 11,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _accent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _GhostCard — card back image con oscurecimiento para efecto de profundidad
+// ---------------------------------------------------------------------------
+
+/// Muestra el dorso de carta con una capa negra semitransparente encima.
+/// [darkness] controla qué tan oscuro se ve (0.0 = sin cambio, 1.0 = negro total).
+class _GhostCard extends StatelessWidget {
+  final double darkness;
+
+  const _GhostCard({required this.darkness});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: const AssetImage('assets/cartas/dorso-carta1.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            const Color(0xFFFF40FF).withValues(alpha: 0.4),
+            BlendMode.overlay,
+          ),
+        ),
+      ),
+      foregroundDecoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: darkness),
+        borderRadius: BorderRadius.circular(16),
       ),
     );
   }

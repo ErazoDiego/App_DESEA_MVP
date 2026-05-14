@@ -60,7 +60,9 @@ Future<GoRouter> pumpApp({
     ),
   );
 
-  await tester.pumpAndSettle();
+  // Pump enough for the HomeScreen entrance animation (1200ms) if redirected there.
+  // pumpAndSettle is NOT used because the glow pulse animation repeats forever.
+  await tester.pump(const Duration(seconds: 2));
 
   return router;
 }
@@ -101,7 +103,7 @@ void main() {
       );
 
       router.go('/home');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(router.routerDelegate.currentConfiguration.uri.path,
           '/onboarding/welcome');
@@ -117,7 +119,7 @@ void main() {
       );
 
       router.go('/home');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(
           router.routerDelegate.currentConfiguration.uri.path, '/home');
@@ -133,7 +135,7 @@ void main() {
       );
 
       router.go('/onboarding/welcome');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(router.routerDelegate.currentConfiguration.uri.path,
           '/onboarding/welcome');
@@ -149,7 +151,7 @@ void main() {
       );
 
       router.go('/onboarding/welcome');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(
           router.routerDelegate.currentConfiguration.uri.path, '/home');
@@ -165,7 +167,8 @@ void main() {
       );
 
       router.go('/game/guardadas');
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(
         find.text(AppStrings.savedCardsTitle),

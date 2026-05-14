@@ -10,6 +10,8 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(home: ProviderScope(child: HomeScreen())),
     );
+    // Pump enough for the 1200ms entrance animation to complete
+    await tester.pump(const Duration(milliseconds: 1500));
 
     expect(find.text(AppStrings.appName), findsOneWidget);
     expect(find.text(AppStrings.tagline), findsOneWidget);
@@ -42,12 +44,12 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    // Let entrance animation complete
+    await tester.pump(const Duration(milliseconds: 1500));
 
-    await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.startNight),
-    );
-    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startNight));
+    // Let navigation settle
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(
       router.routerDelegate.currentConfiguration.uri.path,
@@ -59,12 +61,12 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(home: ProviderScope(child: HomeScreen())),
     );
-    await tester.pumpAndSettle();
+    // Let entrance animation complete
+    await tester.pump(const Duration(milliseconds: 1500));
 
-    await tester.tap(
-      find.widgetWithText(TextButton, AppStrings.howToPlay),
-    );
-    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.howToPlay));
+    // Let bottom sheet animation complete
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text(AppStrings.swipeGesture), findsOneWidget);
     expect(find.text(AppStrings.guardarGesture), findsOneWidget);

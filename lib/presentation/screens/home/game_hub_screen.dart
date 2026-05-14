@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
+import '../../widgets/circular_back_button.dart';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -47,7 +48,7 @@ class GameHubScreen extends ConsumerWidget {
             const _HeroSection(),
             const _MoodRow(),
             _SectionHeader(title: AppStrings.gameHubTitle),
-            _SesionCard(onTap: () => context.go('/game/sesion/default')),
+            _SesionCard(onTap: () => context.go('/game/sesion-confirm/default')),
             const SizedBox(height: 10),
             _LibreCard(onTap: () => context.go('/game/libre')),
             _TusCartasHeader(),
@@ -79,7 +80,7 @@ class GameHubScreen extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: _BottomCta(
-        onTap: () => context.go('/game/sesion/default'),
+        onTap: () => context.go('/game/sesion-confirm/default'),
       ),
     );
   }
@@ -100,15 +101,10 @@ class _Header extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(4, 8, 20, 8),
         child: Row(
           children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white.withValues(alpha: 0.7),
-                size: 20,
-              ),
+            CircularBackButton(
               onPressed: () => context.go('/home'),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 8),
             Text(
               AppStrings.appName,
               style: TextStyle(

@@ -67,7 +67,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.entendido),
+      find.text(AppStrings.entendido),
     );
     await tester.pumpAndSettle();
 

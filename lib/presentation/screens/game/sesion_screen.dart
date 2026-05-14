@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../providers/sesion_providers.dart';
+import '../../widgets/circular_back_button.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import 'carta_activa_screen.dart';
 
@@ -32,8 +34,7 @@ class SesionScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppStrings.modoSesion),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: CircularBackButton(
           onPressed: () => context.go('/game-hub'),
         ),
       ),
@@ -64,12 +65,53 @@ class SesionScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
             ],
-            ElevatedButton(
-              onPressed: state.isLoading
-                  ? null
-                  : () =>
-                      ref.read(sesionActivaProvider.notifier).iniciarSesion(),
-              child: const Text(AppStrings.comenzar),
+            // "Comenzar" — estilo premium fucsia
+            SizedBox(
+              width: 200,
+              child: Material(
+                elevation: 8,
+                shadowColor: Colors.black38,
+                borderRadius: BorderRadius.circular(16),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: state.isLoading
+                      ? null
+                      : () => ref
+                          .read(sesionActivaProvider.notifier)
+                          .iniciarSesion(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: AppColors.fuchsiaAccent,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.fuchsiaAccent
+                              .withValues(alpha: 0.35),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.play_arrow_rounded,
+                            color: Colors.white, size: 22),
+                        SizedBox(width: 8),
+                        Text(
+                          AppStrings.comenzar,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

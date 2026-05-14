@@ -37,35 +37,64 @@ void main() {
   });
 
   testWidgets('button disabled when slider value below 18', (tester) async {
-    await tester.pumpWidget(createAgeApp());
+    final router = GoRouter(
+      initialLocation: '/onboarding/age',
+      routes: [
+        GoRoute(
+          path: '/onboarding/age',
+          builder: (_, __) => const AgeScreen(),
+        ),
+        GoRoute(
+          path: '/onboarding/tutorial',
+          builder: (_, __) => const Scaffold(
+            body: Text('Tutorial page'),
+          ),
+        ),
+      ],
+    );
+
+    final container = ProviderContainer(
+      overrides: [
+        perfilRepositoryProvider.overrideWithValue(
+          FakePerfilRepository(),
+        ),
+      ],
+    );
+    addTearDown(() => container.dispose());
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
     await tester.pumpAndSettle();
 
-    // At default 18, button should be enabled
-    final buttonFinder = find.widgetWithText(
-      ElevatedButton,
-      AppStrings.confirmarEdad,
-    );
-    ElevatedButton button = tester.widget(buttonFinder);
-    expect(button.onPressed, isNotNull);
+    // Verify button text is present at default 18
+    expect(find.text(AppStrings.confirmarEdad), findsOneWidget);
 
-    // Tap the slider at the far left edge to set value near minimum
+    // Tap the slider at the far left edge to set value near minimum (below 18)
     final sliderRect = tester.getRect(find.byType(Slider));
     await tester.tapAt(Offset(sliderRect.left + 5, sliderRect.center.dy));
     await tester.pumpAndSettle();
 
-    // Button should now be disabled (value < 18)
-    button = tester.widget(buttonFinder);
-    expect(button.onPressed, isNull);
+    // Tap the confirm button — should NOT navigate because edad < 18
+    await tester.tap(find.text(AppStrings.confirmarEdad));
+    await tester.pumpAndSettle();
+
+    // Should still be on the same page
+    expect(
+      router.routerDelegate.currentConfiguration.uri.path,
+      '/onboarding/age',
+    );
   });
 
   testWidgets('button enabled when slider at 18 or above', (tester) async {
     await tester.pumpWidget(createAgeApp());
     await tester.pumpAndSettle();
 
-    final button = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, AppStrings.confirmarEdad),
-    );
-    expect(button.onPressed, isNotNull);
+    // At default 18, the button text should be visible
+    expect(find.text(AppStrings.confirmarEdad), findsOneWidget);
   });
 
   testWidgets('slider displays label in años format', (tester) async {
@@ -86,7 +115,7 @@ void main() {
     expect(find.text('100 años'), findsOneWidget);
   });
 
-  testWidgets('tapping with age >= 18 navigates to preferences',
+  testWidgets('tapping with age >= 18 navigates to tutorial',
       (tester) async {
     final container = ProviderContainer(
       overrides: [
@@ -105,9 +134,9 @@ void main() {
           builder: (_, __) => const AgeScreen(),
         ),
         GoRoute(
-          path: '/onboarding/preferences',
+          path: '/onboarding/tutorial',
           builder: (_, __) => const Scaffold(
-            body: Text('Preferences page'),
+            body: Text('Tutorial page'),
           ),
         ),
       ],
@@ -125,14 +154,14 @@ void main() {
 
     // Tap the confirm button
     await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.confirmarEdad),
+      find.text(AppStrings.confirmarEdad),
     );
     await tester.pumpAndSettle();
 
-    // Should have navigated to /onboarding/preferences
+    // Should have navigated to /onboarding/tutorial
     expect(
       router.routerDelegate.currentConfiguration.uri.path,
-      '/onboarding/preferences',
+      '/onboarding/tutorial',
     );
   });
 
@@ -155,9 +184,9 @@ void main() {
           builder: (_, __) => const AgeScreen(),
         ),
         GoRoute(
-          path: '/onboarding/preferences',
+          path: '/onboarding/tutorial',
           builder: (_, __) => const Scaffold(
-            body: Text('Preferences page'),
+            body: Text('Tutorial page'),
           ),
         ),
       ],
@@ -173,9 +202,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // Default slider value is 18 (button enabled), tap confirm
+    // Default slider value is 18, tap confirm
     await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.confirmarEdad),
+      find.text(AppStrings.confirmarEdad),
     );
     await tester.pumpAndSettle();
 
@@ -187,10 +216,10 @@ void main() {
     expect(fake.ultimoPerfilGuardado!.edad, 18);
     expect(fake.ultimoPerfilGuardado!.id, 'default');
 
-    // Verify navigation to preferences
+    // Verify navigation to tutorial
     expect(
       router.routerDelegate.currentConfiguration.uri.path,
-      '/onboarding/preferences',
+      '/onboarding/tutorial',
     );
   });
 }

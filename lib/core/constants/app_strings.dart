@@ -8,8 +8,8 @@ class AppStrings {
   /// Nombre visible de la aplicación.
   static const String appName = 'DESEA';
 
-  /// Tagline mostrado en la pantalla de bienvenida.
-  static const String tagline = 'La noche empieza acá';
+  /// Tagline mostrado en la pantalla de bienvenida y home.
+  static const String tagline = 'Tu noche empieza acá';
 
   /// Etiqueta del botón para comenzar una sesión de juego.
   static const String startNight = 'Empezar noche';
@@ -187,6 +187,51 @@ class AppStrings {
 
   /// Botón para iniciar una nueva sesión.
   static const String iniciarSesion = 'Iniciar sesión';
+
+  /// Etiqueta "Modo elegido" sobre el título en confirmación.
+  static const String sesionModoElegido = 'Modo elegido';
+
+  /// Badge de duración estimada de la sesión.
+  static const String sesionDuracion = '~30 min';
+
+  /// Título del carrusel de niveles en confirmación.
+  static const String sesionAsiVaLaSesion = 'Así va la sesión';
+
+  /// Nivel 1 — Suave.
+  static const String sesionNivel1 = 'Nivel 1 · Suave';
+
+  /// Descripción del Nivel 1.
+  static const String sesionNivel1Desc =
+      'Preguntas para romper el hielo y soltar la lengua.';
+
+  /// Nivel 2 — Íntimo.
+  static const String sesionNivel2 = 'Nivel 2 · Íntimo';
+
+  /// Descripción del Nivel 2.
+  static const String sesionNivel2Desc =
+      'Deseos, fantasías y lo que nunca dijiste.';
+
+  /// Nivel 3 — Sin filtro.
+  static const String sesionNivel3 = 'Nivel 3 · Sin filtro';
+
+  /// Descripción del Nivel 3.
+  static const String sesionNivel3Desc =
+      'Solo para cuando ya no hay vuelta atrás.';
+
+  /// Botón primario para empezar la sesión.
+  static const String empezarSesion = 'Empezar sesión';
+
+  /// Botón secundario para cambiar de modo.
+  static const String cambiarModo = 'Cambiar modo';
+
+  /// Stats de la sesión: cantidad de cartas.
+  static const String sesionStatsCartas = '20 cartas';
+
+  /// Stats de la sesión: cantidad de niveles.
+  static const String sesionStatsNiveles = '3 niveles';
+
+  /// Stats de la sesión: cantidad de mazos.
+  static const String sesionStatsMazos = '2 mazos';
 
   // ─────────────────────────────────────────────────────────────
   // Phases

@@ -7,6 +7,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
 import '../../../data/models/carta_guardada_model.dart';
 import '../../providers/sesion_providers.dart';
+import '../../widgets/circular_back_button.dart';
 import '../../widgets/collection_card_tile.dart';
 
 // ---------------------------------------------------------------------------
@@ -129,8 +130,7 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.savedCardsTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: CircularBackButton(
           onPressed: () => context.go('/game-hub'),
         ),
       ),

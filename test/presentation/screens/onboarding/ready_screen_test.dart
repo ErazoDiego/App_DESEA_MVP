@@ -41,7 +41,7 @@ void main() {
     expect(find.text(AppStrings.empezar), findsOneWidget);
   });
 
-  testWidgets('shows edad and modo in summary', (tester) async {
+  testWidgets('shows edad in summary', (tester) async {
     final perfil = Perfil(
       id: 'default',
       edad: 25,
@@ -70,8 +70,8 @@ void main() {
 
     // Should show edad value
     expect(find.text('25 años'), findsOneWidget);
-    // Should show modo label
-    expect(find.text(AppStrings.modoLibre), findsOneWidget);
+    // Modo should NOT be shown anymore
+    expect(find.textContaining('Modo:'), findsNothing);
   });
 
   testWidgets('shows summary labels with correct format', (tester) async {
@@ -101,11 +101,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // Verify label format: "Edad:" and "Modo:" are displayed
+    // Verify only "Edad:" label is displayed (Modo was removed)
     expect(find.textContaining('Edad:'), findsOneWidget);
-    expect(find.textContaining('Modo:'), findsOneWidget);
-    // Verify Sesion mode is displayed
-    expect(find.text(AppStrings.modoSesion), findsOneWidget);
+    expect(find.textContaining('Modo:'), findsNothing);
+    expect(find.text(AppStrings.modoSesion), findsNothing);
   });
 
   testWidgets('tapping empezar navigates to home and completes onboarding',
@@ -153,7 +152,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.empezar),
+      find.text(AppStrings.empezar),
     );
     await tester.pumpAndSettle();
 

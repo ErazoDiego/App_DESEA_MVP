@@ -28,35 +28,37 @@
 - Follow Clean Architecture: data/domain/presentation layers
 - Repository pattern for data access
 - Use go_router for navigation
-- Hive for local persistence with type adapters
+- Hive CE for local persistence with type adapters (.g.dart)
 - State providers in presentation/providers/
 - Route definitions in presentation/routes/
-- Hive adapters in data/models/adapters/
+- Immutable state with copyWith pattern
+- ProviderScope.overrides for test dependency injection
+- In-memory Hive fakes (FakeGuardadasBox, etc.) for widget tests
+- Dark theme only with custom AppColorsTheme
+- Spanish docstrings with English code identifiers
+- Conventional commits (feat:, chore:, fix:)
 
 ### SDD Workflow
 - Always create proposal BEFORE specs (sdd-propose → sdd-spec → sdd-design → sdd-tasks → sdd-apply → sdd-verify → sdd-archive)
 - Use Given/When/Then format for scenarios in specs
 - Include rollback plan in proposals for risky changes
 - Tasks must be small enough to complete in one session
-- Run tests if test infrastructure exists during verify
+- Run `flutter test` during verify phase
 - Compare implementation against every spec scenario
-
-### go-testing (contextual)
-- Only load when Go/Bubbletea testing detected
-- Use teatest for TUI testing patterns
+- Coverage: use `flutter test --coverage`
 
 ## Project Conventions
 
 | File | Path | Notes |
 |------|------|-------|
 | AGENTS.md | ~/.config/opencode/AGENTS.md | Senior architect persona, SDD workflow, engram protocol |
-| engram-convention.md | ~/.config/opencode/skills/_shared/engram-convention.md | Engram artifact naming convention |
+| openspec/config.yaml | openspec/config.yaml | SDD config with detected stack and testing capabilities |
 
 ## Project: DESEA-MVP
 
-**Stack**: Flutter 3.41.9, Dart 3.11.5, Riverpod, Hive, go_router
+**Stack**: Flutter 3.41.9, Dart 3.11.5, Riverpod, Hive CE, go_router
 **Architecture**: Clean Architecture (data/domain/presentation)
-**Testing**: flutter test ✅, dart analyze ✅, dart format ✅
+**Testing**: flutter test ✅ (332 tests, all pass), flutter analyze ✅, dart format ✅
 **Strict TDD**: enabled
-**Status**: Greenfield (no code yet)
+**Status**: Active development with SDD workflow established
 **Directory**: /home/pc_dae/DESEA-MVP/
