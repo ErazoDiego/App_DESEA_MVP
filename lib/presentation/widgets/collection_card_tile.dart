@@ -135,7 +135,7 @@ class _CollectionCardTileState extends State<CollectionCardTile> {
               Positioned.fill(
                 child: Image.asset(
                   'assets/cartas/frente_fucsia.jpg',
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   color: Colors.black.withValues(alpha: 0.2),
                   colorBlendMode: BlendMode.darken,
                 ),

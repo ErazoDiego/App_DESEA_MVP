@@ -131,7 +131,7 @@ class DeckBuilderCardTile extends StatelessWidget {
                             : AssetImage(imagenUrl!))
                         : const AssetImage(
                             'assets/cartas/frente_fucsia.jpg'),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     color: Colors.black.withValues(alpha: 0.2),
                     colorBlendMode: BlendMode.darken,
                   ),

@@ -140,10 +140,6 @@ class _CartaCardState extends State<CartaCard>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: AppColors.surface,
-        border: Border.all(
-                color: _levelColor.withValues(alpha: 0.35),
-                width: 1,
-              ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(
@@ -152,7 +148,7 @@ class _CartaCardState extends State<CartaCard>
           Positioned.fill(
             child: Image.asset(
               'assets/cartas/dorso_nuevo.jpg',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               color: const Color(0xFFFF40FF).withValues(alpha: 0.4),
               colorBlendMode: BlendMode.overlay,
             ),
@@ -164,16 +160,9 @@ class _CartaCardState extends State<CartaCard>
             child: Container(
               width: 14,
               height: 14,
-              decoration: BoxDecoration(
-                color: _levelColor,
+              decoration: const BoxDecoration(
+                color: Colors.white24,
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: _levelColor.withValues(alpha: 0.6),
-                    blurRadius: 8,
-                    spreadRadius: 1,
-                  ),
-                ],
               ),
             ),
           ),
@@ -217,30 +206,14 @@ class _CartaCardState extends State<CartaCard>
           Positioned.fill(
             child: Image.asset(
               'assets/cartas/frente_fucsia.jpg',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               color: Colors.black.withValues(alpha: 0.2),
               colorBlendMode: BlendMode.darken,
             ),
           ),
-          // Tinte por tipo
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    _levelColor.withValues(alpha: 0.05),
-                    _levelColor.withValues(alpha: 0.03),
-                    AppColors.surface.withValues(alpha: 0.50),
-                  ],
-                ),
-              ),
-            ),
-          ),
           // Contenido
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
             child: Column(
               children: [
                 Row(
@@ -250,32 +223,34 @@ class _CartaCardState extends State<CartaCard>
                     LevelBadge(nivel: widget.nivel),
                   ],
                 ),
-                const Spacer(),
-                Text(
-                  '"${widget.carta.texto}"',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Cormorant Garamond',
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white,
-                    fontSize: 45,
-                    height: 1.25,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black87,
-                        blurRadius: 6,
-                        offset: Offset(1, 2),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      '"${widget.carta.texto}"',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Cormorant Garamond',
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                        fontSize: 26,
+                        height: 1.25,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black87,
+                            blurRadius: 6,
+                            offset: Offset(1, 2),
+                          ),
+                          Shadow(
+                            color: Colors.black38,
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
                       ),
-                      Shadow(
-                        color: Colors.black38,
-                        blurRadius: 12,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-                const Spacer(),
                 if (widget.onSave != null)
                   OutlinedButton.icon(
                     onPressed: widget.onSave,

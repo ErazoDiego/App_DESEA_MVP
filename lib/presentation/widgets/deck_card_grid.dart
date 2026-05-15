@@ -213,7 +213,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
           Positioned.fill(
             child: Image.asset(
               'assets/cartas/dorso_nuevo.jpg',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               // Tinte fucsia para neutralizar el verde del dorso y
               // que combine con la identidad visual de la app
               color: const Color(0xFFFF40FF).withValues(alpha: 0.4),
@@ -312,7 +312,7 @@ class _GhostCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         image: DecorationImage(
           image: const AssetImage('assets/cartas/dorso_nuevo.jpg'),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
           colorFilter: ColorFilter.mode(
             const Color(0xFFFF40FF).withValues(alpha: 0.4),
             BlendMode.overlay,
