@@ -12,5 +12,12 @@
     "texto": "Lo que sea que estén sintiendo ahora mismo, no lo dejen pasar. Esta noche fue de ustedes. Lo que sigue también. No hay instrucción. Solo el momento.",
     "dirigida": "mixta",
     "tiempo_segundos": null
+  },
+  {
+    "id": "cierre_03",
+    "tipo": "deseo",
+    "texto": "No importa la posición, cuando vayas a acabar, sácalo y terminálo en la cara, boca, pechos, espalda o donde tu pareja elija.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
   }
 ]

@@ -40,5 +40,19 @@
     "texto": "Tomate de la mano y no te sueltes durante toda la ronda.",
     "dirigida": "mixta",
     "tiempo_segundos": null
+  },
+  {
+    "id": "suave_07",
+    "tipo": "reto",
+    "texto": "Decile tres cosas específicas que te encantan de su personalidad. No del físico.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_08",
+    "tipo": "verdad",
+    "texto": "¿Qué es lo que más miedo te da de esta relación?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
   }
 ]

@@ -4,10 +4,10 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import '../models/carta_model.dart';
 
 /// Seeds the Hive cartas box from embedded JSON assets.
-/// Safe to call multiple times — only seeds if box is empty.
+///
+/// Only adds cards whose [id] doesn't already exist in the box — safe to
+/// call on every launch without overwriting user data or existing cards.
 Future<void> seedCartasIfNeeded(Box<CartaModel> cartasBox) async {
-  if (cartasBox.isNotEmpty) return;
-
   const sources = ['suave.json', 'picante.json', 'intenso.json', 'cierre.json'];
 
   for (final source in sources) {
@@ -16,8 +16,13 @@ Future<void> seedCartasIfNeeded(Box<CartaModel> cartasBox) async {
 
     for (final jsonItem in jsonList) {
       final map = jsonItem as Map<String, dynamic>;
+      final id = map['id'] as String;
+
+      // Skip if card already exists — never overwrite
+      if (cartasBox.containsKey(id)) continue;
+
       final carta = CartaModel(
-        id: map['id'] as String,
+        id: id,
         tipo: map['tipo'] as String,
         texto: map['texto'] as String,
         dirigida: map['dirigida'] as String,

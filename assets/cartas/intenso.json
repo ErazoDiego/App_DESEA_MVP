@@ -40,5 +40,40 @@
     "texto": "Confesale a tu pareja algo que siempre quisiste probar y nunca te animaste.",
     "dirigida": "mixta",
     "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_07",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que hayas fantasiado conmigo que nunca me contaste porque creías que me iba a sorprender demasiado?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_08",
+    "tipo": "reto",
+    "texto": "Quítale una prenda a tu pareja usando solo la boca.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_09",
+    "tipo": "deseo",
+    "texto": "Arrodíllate frente a tu pareja y besa su entrepierna por encima de la ropa durante 30 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "intenso_10",
+    "tipo": "deseo",
+    "texto": "Deja que tu pareja te ate las muñecas con una corbata o bufanda y te controle durante 2 minutos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "intenso_11",
+    "tipo": "deseo",
+    "texto": "Tu pareja te tapa los ojos con una venda y te toca donde quiera durante 90 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 90
   }
 ]

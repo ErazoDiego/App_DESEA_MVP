@@ -47,5 +47,54 @@
     "texto": "Bailá una canción lenta con tu pareja durante 1 minuto.",
     "dirigida": "mixta",
     "tiempo_segundos": 60
+  },
+  {
+    "id": "picante_08",
+    "tipo": "reto",
+    "texto": "Escriban juntos en un papel una cosa que nunca hicieron y que los dos quieran probar esta noche.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_09",
+    "tipo": "reto",
+    "texto": "Sin usar las manos, besa cada parte del cuello de ella durante 45 segundos.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": 45
+  },
+  {
+    "id": "picante_10",
+    "tipo": "reto",
+    "texto": "Tapate los ojos. Ella te da tres besos en lugares que elije ella.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_11",
+    "tipo": "reto",
+    "texto": "Miralo fijo a los ojos y decile en voz baja exactamente qué querés que te haga.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_12",
+    "tipo": "verdad",
+    "texto": "¿Qué juguete sexual te gustaría probar y cómo te imaginas usándolo?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_13",
+    "tipo": "reto",
+    "texto": "Arrodíllate frente a tu pareja y besa su entrepierna por encima de la ropa durante 30 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "picante_14",
+    "tipo": "verdad",
+    "texto": "¿Cuál es la fantasía que más te excita pero todavía no te animaste a probar?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
   }
 ]
