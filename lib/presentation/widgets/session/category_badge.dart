@@ -8,6 +8,19 @@ class CategoryBadge extends StatelessWidget {
 
   const CategoryBadge({super.key, required this.tipo});
 
+  Color get _color {
+    switch (tipo) {
+      case 'verdad':
+        return const Color(0xFF059669); // emerald
+      case 'reto':
+        return const Color(0xFFEA580C); // orange
+      case 'deseo':
+        return const Color(0xFFA21CAF); // fuchsia
+      default:
+        return AppColors.fuchsiaAccent;
+    }
+  }
+
   String get _label {
     switch (tipo) {
       case 'verdad':
@@ -24,18 +37,24 @@ class CategoryBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.fuchsiaAccent.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
+        color: _color.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: _color.withValues(alpha: 0.5),
+          width: 1,
+        ),
       ),
       child: Text(
         _label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.fuchsiaAccent,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
+        style: TextStyle(
+          fontFamily: 'Rajdhani',
+          fontWeight: FontWeight.w700,
+          color: _color,
+          fontSize: 11,
+          letterSpacing: 1.8,
+        ),
       ),
     );
   }

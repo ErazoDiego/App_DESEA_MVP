@@ -30,6 +30,9 @@ class CartaCard extends StatefulWidget {
   /// Callback al presionar el botón de guardar.
   final VoidCallback? onSave;
 
+  /// Callback cuando el usuario voltea la carta (pasa de dorso a contenido).
+  final VoidCallback? onFlip;
+
   const CartaCard({
     super.key,
     required this.carta,
@@ -38,6 +41,7 @@ class CartaCard extends StatefulWidget {
     this.onSwipeNext,
     this.onSwipePrev,
     this.onSave,
+    this.onFlip,
   });
 
   @override
@@ -68,6 +72,7 @@ class _CartaCardState extends State<CartaCard>
     if (_isFlipped) return;
     setState(() => _isFlipped = true);
     _flipController.forward();
+    widget.onFlip?.call();
   }
 
   Color get _levelColor {
@@ -135,7 +140,10 @@ class _CartaCardState extends State<CartaCard>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: AppColors.surface,
-        border: Border.all(color: _levelColor, width: 2),
+        border: Border.all(
+                color: _levelColor.withValues(alpha: 0.35),
+                width: 1,
+              ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(
@@ -143,7 +151,7 @@ class _CartaCardState extends State<CartaCard>
           // Imagen de dorso con tinte fucsia
           Positioned.fill(
             child: Image.asset(
-              'assets/cartas/dorso-carta1.jpg',
+              'assets/cartas/dorso_nuevo.jpg',
               fit: BoxFit.cover,
               color: const Color(0xFFFF40FF).withValues(alpha: 0.4),
               colorBlendMode: BlendMode.overlay,
@@ -194,8 +202,7 @@ class _CartaCardState extends State<CartaCard>
 
   // ── Card Front (contenido de la carta) ──────────────────────────────
   Widget _buildCardFront() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 600),
+    return Container(
       decoration: BoxDecoration(
         border: widget.isSaved
             ? Border.all(color: AppColors.fuchsiaAccent, width: 2)
@@ -203,37 +210,92 @@ class _CartaCardState extends State<CartaCard>
         borderRadius: BorderRadius.circular(16),
         color: AppColors.surface,
       ),
-      padding: const EdgeInsets.all(24),
-      child: Column(
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CategoryBadge(tipo: widget.carta.tipo.name),
-              LevelBadge(nivel: widget.nivel),
-            ],
+          // Imagen de fondo
+          Positioned.fill(
+            child: Image.asset(
+              'assets/cartas/frente_fucsia.jpg',
+              fit: BoxFit.cover,
+              color: Colors.black.withValues(alpha: 0.2),
+              colorBlendMode: BlendMode.darken,
+            ),
           ),
-          const Spacer(),
-          Text(
-            widget.carta.texto,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.onSurface,
-                  height: 1.5,
+          // Tinte por tipo
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    _levelColor.withValues(alpha: 0.05),
+                    _levelColor.withValues(alpha: 0.03),
+                    AppColors.surface.withValues(alpha: 0.50),
+                  ],
                 ),
-          ),
-          const Spacer(),
-          if (widget.onSave != null)
-            OutlinedButton.icon(
-              onPressed: widget.onSave,
-              icon:
-                  Icon(widget.isSaved ? Icons.bookmark : Icons.bookmark_border),
-              label: Text(widget.isSaved ? 'Guardada' : 'Guardar'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.fuchsiaAccent,
-                side: const BorderSide(color: AppColors.fuchsiaAccent),
               ),
             ),
+          ),
+          // Contenido
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 24),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CategoryBadge(tipo: widget.carta.tipo.name),
+                    LevelBadge(nivel: widget.nivel),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  '"${widget.carta.texto}"',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Cormorant Garamond',
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                    fontSize: 45,
+                    height: 1.25,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black87,
+                        blurRadius: 6,
+                        offset: Offset(1, 2),
+                      ),
+                      Shadow(
+                        color: Colors.black38,
+                        blurRadius: 12,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                if (widget.onSave != null)
+                  OutlinedButton.icon(
+                    onPressed: widget.onSave,
+                    icon: Icon(
+                        widget.isSaved ? Icons.bookmark : Icons.bookmark_border),
+                    label: Text(
+                      widget.isSaved ? 'Guardada' : 'Guardar',
+                      style: const TextStyle(
+                        fontFamily: 'Rajdhani',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.white70),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
     );

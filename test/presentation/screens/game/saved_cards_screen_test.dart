@@ -253,8 +253,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       // First 2 cards visible in grid viewport
-      expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
-      expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsOneWidget);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsOneWidget);
 
       // Level badges visible (first row only)
       expect(find.text('Suave'), findsWidgets);
@@ -287,9 +287,9 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       // Only Verdad cards visible
-      expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
-      expect(find.text('Describí tu lugar favorito'), findsOneWidget);
-      expect(find.text('Bailá pegados por 3 minutos'), findsNothing);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsOneWidget);
+      expect(find.text('"Describí tu lugar favorito"'), findsOneWidget);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsNothing);
       expect(find.text('Elegí la próxima canción'), findsNothing);
     });
 
@@ -315,9 +315,9 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
-      expect(find.text('¿Cuál es tu fantasía?'), findsNothing);
-      expect(find.text('Describí tu lugar favorito'), findsNothing);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsOneWidget);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsNothing);
+      expect(find.text('"Describí tu lugar favorito"'), findsNothing);
       expect(find.text('Elegí la próxima canción'), findsNothing);
     });
 
@@ -345,7 +345,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Bailá pegados por 3 minutos'), findsNothing);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsNothing);
 
       // Tap Todas to reset filter
       await tester.tap(find.text(AppStrings.savedCardsFilterAll));
@@ -353,8 +353,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       // First row cards visible again (grid viewport)
-      expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
-      expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsOneWidget);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsOneWidget);
     });
   });
 
@@ -395,8 +395,8 @@ void main() {
 
       // Card removed from box and screen
       expect(fakeBox.length, 3);
-      expect(find.text('¿Cuál es tu fantasía?'), findsNothing);
-      expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsNothing);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsOneWidget);
     });
 
     testWidgets('4.4b cancels delete when cancel is tapped',
@@ -429,7 +429,7 @@ void main() {
 
       // All cards still present
       expect(fakeBox.length, 4);
-      expect(find.text('¿Cuál es tu fantasía?'), findsOneWidget);
+      expect(find.text('"¿Cuál es tu fantasía?"'), findsOneWidget);
     });
 
     testWidgets('4.5 deletes during active filter', (tester) async {
@@ -455,7 +455,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Bailá pegados por 3 minutos'), findsOneWidget);
+      expect(find.text('"Bailá pegados por 3 minutos"'), findsOneWidget);
       expect(fakeBox.length, 4);
 
       // Delete the only visible Reto card

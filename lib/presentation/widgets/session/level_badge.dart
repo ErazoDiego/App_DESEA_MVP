@@ -51,10 +51,12 @@ class LevelBadge extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           _nivelLabel,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: _nivelColor,
-                fontWeight: FontWeight.w600,
-              ),
+          style: TextStyle(
+            fontFamily: 'Rajdhani',
+            fontWeight: FontWeight.w600,
+            color: _nivelColor,
+            fontSize: 11,
+          ),
         ),
       ],
     );

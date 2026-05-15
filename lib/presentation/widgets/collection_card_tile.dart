@@ -106,7 +106,7 @@ class _CollectionCardTileState extends State<CollectionCardTile> {
         duration: const Duration(milliseconds: 120),
         curve: Curves.easeOut,
         child: AspectRatio(
-          aspectRatio: 0.72,
+          aspectRatio: 683 / 1024, // coincide con frente_fucsia.jpg
           child: _buildCard(),
         ),
       ),
@@ -119,14 +119,7 @@ class _CollectionCardTileState extends State<CollectionCardTile> {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                _accent.withValues(alpha: 0.55),
-                AppColors.surface,
-              ],
-            ),
+            color: AppColors.surface,
             boxShadow: [
               BoxShadow(
                 color: _glow,
@@ -135,70 +128,111 @@ class _CollectionCardTileState extends State<CollectionCardTile> {
               ),
             ],
           ),
-          child: Column(
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
             children: [
-              // ── Top section: image or icon fallback ────────────
-              Expanded(
-                flex: 2,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(16),
-                  ),
-                  child: widget.imageUrl != null
-                      ? Image.network(
-                          widget.imageUrl!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
-                            return _buildIconFallback();
-                          },
-                        )
-                      : _buildIconFallback(),
+              // ── Image de fondo ────────────────────────────────
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/cartas/frente_fucsia.jpg',
+                  fit: BoxFit.cover,
+                  color: Colors.black.withValues(alpha: 0.2),
+                  colorBlendMode: BlendMode.darken,
                 ),
               ),
-              // ── Bottom section: text + LevelBadge + date ──────
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.text,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+              // ── Tinte por categoría ────────────────────────────
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        _accent.withValues(alpha: 0.35),
+                        _accent.withValues(alpha: 0.12),
+                        AppColors.surface.withValues(alpha: 0.85),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // ── Contenido centrado ────────────────────────────
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Column(
+                  children: [
+                    // ── Top: category badge ──────────────────────
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 3,
                       ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Text(
-                            _tipoLabel(widget.tipo).toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.2,
-                            ),
+                      decoration: BoxDecoration(
+                        color: _accent.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: _accent.withValues(alpha: 0.4),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        _tipoLabel(widget.tipo).toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: 'Rajdhani',
+                          fontWeight: FontWeight.w700,
+                          color: _accent,
+                          fontSize: 10,
+                          letterSpacing: 1.8,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    // ── Main text: grande, bold, con glow ────────
+                    Text(
+                      '"${widget.text}"',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Cormorant Garamond',
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                        fontSize: 22,
+                        height: 1.25,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black87,
+                            blurRadius: 6,
+                            offset: Offset(1, 2),
                           ),
-                          const SizedBox(width: 8),
-                          LevelBadge(nivel: widget.nivel),
-                          const Spacer(),
-                          Text(
-                            widget.dateLabel,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.7),
-                              fontSize: 11,
-                            ),
+                          Shadow(
+                            color: Colors.black38,
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
+                    // ── Bottom: level + fecha limpio ─────────────
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LevelBadge(nivel: widget.nivel),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.dateLabel,
+                          style: TextStyle(
+                            fontFamily: 'Rajdhani',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white.withValues(alpha: 0.5),
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -226,19 +260,6 @@ class _CollectionCardTileState extends State<CollectionCardTile> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildIconFallback() {
-    return Container(
-      color: _accent.withValues(alpha: 0.2),
-      child: Center(
-        child: Icon(
-          _tipoIcon(widget.tipo),
-          size: 32,
-          color: Colors.white.withValues(alpha: 0.3),
-        ),
-      ),
     );
   }
 }

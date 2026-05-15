@@ -559,7 +559,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
-                        childAspectRatio: 0.80,
+                        childAspectRatio: 683 / 1024, // coincide con frente_fucsia.jpg
                       ),
                       itemCount: _filteredItems.length,
                       itemBuilder: (context, index) {

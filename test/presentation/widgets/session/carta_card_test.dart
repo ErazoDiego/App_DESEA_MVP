@@ -32,7 +32,7 @@ void main() {
 
       // Al arrancar boca abajo NO debe mostrar el texto de la carta
       expect(
-        find.text('¿Cuál es tu fantasía más secreta?'),
+        find.text('"¿Cuál es tu fantasía más secreta?"'),
         findsNothing,
       );
       // Debe mostrar el hint "Toca para revelar"
@@ -52,7 +52,7 @@ void main() {
       await _flipCard(tester);
 
       expect(
-        find.text('¿Cuál es tu fantasía más secreta?'),
+        find.text('"¿Cuál es tu fantasía más secreta?"'),
         findsOneWidget,
       );
     });

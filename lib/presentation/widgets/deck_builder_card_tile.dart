@@ -122,16 +122,20 @@ class DeckBuilderCardTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(13),
             child: Stack(
               children: [
-                // ── Background: image (if available) ─────────────
-                if (_hasImage)
-                  Positioned.fill(
-                    child: Image(
-                      image: imagenUrl!.startsWith('http')
-                          ? NetworkImage(imagenUrl!)
-                          : AssetImage(imagenUrl!) as ImageProvider,
-                      fit: BoxFit.cover,
-                    ),
+                // ── Background: card front (default) o imagen ─────
+                Positioned.fill(
+                  child: Image(
+                    image: _hasImage
+                        ? (imagenUrl!.startsWith('http')
+                            ? NetworkImage(imagenUrl!)
+                            : AssetImage(imagenUrl!))
+                        : const AssetImage(
+                            'assets/cartas/frente_fucsia.jpg'),
+                    fit: BoxFit.cover,
+                    color: Colors.black.withValues(alpha: 0.2),
+                    colorBlendMode: BlendMode.darken,
                   ),
+                ),
 
                 // ── Gradient overlay ──────────────────────────────
                 Positioned.fill(
@@ -153,45 +157,61 @@ class DeckBuilderCardTile extends StatelessWidget {
                 // ── Content ────────────────────────────────────────
                 Positioned.fill(
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     child: Column(
                       children: [
-                        // Top: category
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              _categoryIcon,
-                              size: 12,
+                        // ── Top: category badge ───────────────────
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _accentColor.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: _accentColor.withValues(alpha: 0.4),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            _tipoLabel.toUpperCase(),
+                            style: TextStyle(
+                              fontFamily: 'Rajdhani',
+                              fontWeight: FontWeight.w700,
                               color: _accentColor,
+                              fontSize: 9,
+                              letterSpacing: 1.5,
                             ),
-                            const SizedBox(width: 3),
-                            Flexible(
-                              child: Text(
-                                _tipoLabel,
-                                style: TextStyle(
-                                  color: _accentColor.withValues(alpha: 0.9),
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.5,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
 
                         const Spacer(),
 
-                        // Texto centrado H + V
+                        // ── Texto grande centrado ──────────────────
                         Center(
                           child: Text(
-                            texto,
+                            '"$texto"',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.85),
-                              fontSize: 11,
-                              height: 1.3,
+                              fontFamily: 'Cormorant Garamond',
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.white.withValues(alpha: 0.95),
+                              fontSize: 17,
+                              height: 1.25,
+                              shadows: const [
+                                Shadow(
+                                  color: Colors.black87,
+                                  blurRadius: 4,
+                                  offset: Offset(1, 1),
+                                ),
+                                Shadow(
+                                  color: Colors.black38,
+                                  blurRadius: 8,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
                             ),
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
@@ -200,24 +220,26 @@ class DeckBuilderCardTile extends StatelessWidget {
 
                         const Spacer(),
 
-                        // Bottom: time badge
+                        // ── Bottom: time badge ────────────────────
                         if (tiempoSegundos != null && tiempoSegundos! > 0)
                           Align(
                             alignment: Alignment.centerRight,
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 1,
+                                horizontal: 6,
+                                vertical: 2,
                               ),
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 '${tiempoSegundos}s',
                                 style: TextStyle(
+                                  fontFamily: 'Rajdhani',
+                                  fontWeight: FontWeight.w600,
                                   color: Colors.white.withValues(alpha: 0.5),
-                                  fontSize: 9,
+                                  fontSize: 10,
                                 ),
                               ),
                             ),

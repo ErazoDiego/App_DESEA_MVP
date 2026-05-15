@@ -130,6 +130,7 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.savedCardsTitle),
+        centerTitle: true,
         leading: CircularBackButton(
           onPressed: () => context.go('/game-hub'),
         ),
@@ -225,7 +226,7 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.72,
+                    childAspectRatio: 683 / 1024, // coincide con frente_fucsia.jpg
                   ),
                   itemCount: _filteredCards.length,
                   itemBuilder: (context, index) {

@@ -7,6 +7,7 @@ import '../../widgets/session/progress_bar.dart';
 import '../../widgets/session/carta_card.dart';
 import '../../widgets/session/timer_bar.dart';
 import '../../widgets/session/pause_modal.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 
 /// Pantalla principal de juego durante una sesión activa.
@@ -24,6 +25,23 @@ class CartaActivaScreen extends ConsumerStatefulWidget {
 class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _flashController;
+  bool _isCardFlipped = false;
+  String? _lastCardId;
+
+  ButtonStyle get _fuchsiaButtonStyle => ElevatedButton.styleFrom(
+        backgroundColor: AppColors.fuchsiaAccent,
+        foregroundColor: Colors.white,
+        elevation: 8,
+        shadowColor: AppColors.fuchsiaAccent.withValues(alpha: 0.35),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.3,
+        ),
+      );
 
   @override
   void initState() {
@@ -86,6 +104,11 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
     }
 
     final carta = state.currentCarta;
+    // Reset flip state cuando cambia la carta
+    if (carta.id != _lastCardId) {
+      _isCardFlipped = false;
+      _lastCardId = carta.id;
+    }
     final hasTimer =
         carta.tiempoSegundos != null && state.remainingSeconds != null;
 
@@ -122,8 +145,8 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                     ],
                   ),
 
-                  // Timer bar (if card has timer)
-                  if (hasTimer)
+                  // Timer bar (solo después de voltear la carta)
+                  if (hasTimer && _isCardFlipped)
                     TimerBar(
                       seconds: state.remainingSeconds!,
                       onComplete: () => notifier.nextCard(),
@@ -150,6 +173,7 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                         carta: carta,
                         nivel: state.nivelActual,
                         isSaved: state.savedCardIds.contains(carta.id),
+                        onFlip: () => setState(() => _isCardFlipped = true),
                         onSwipeNext: state.canSkipAhead
                             ? () => notifier.nextCard()
                             : null,
@@ -170,19 +194,25 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                     children: [
                       TextButton.icon(
                         onPressed: () => notifier.pausar(),
-                        icon: const Icon(Icons.pause),
-                        label: const Text(AppStrings.pausar),
+                        icon: const Icon(Icons.pause,
+                            color: AppColors.fuchsiaAccent),
+                        label: const Text(
+                          AppStrings.pausar,
+                          style: TextStyle(color: AppColors.fuchsiaAccent),
+                        ),
                       ),
                       Row(
                         children: [
                           if (state.isLastCard)
                             ElevatedButton(
                               onPressed: () => notifier.nextCard(),
+                              style: _fuchsiaButtonStyle,
                               child: const Text(AppStrings.finalizar),
                             )
                           else
                             ElevatedButton(
                               onPressed: () => notifier.nextCard(),
+                              style: _fuchsiaButtonStyle,
                               child: const Text(AppStrings.siguiente),
                             ),
                         ],
@@ -230,6 +260,7 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                           ref.read(sesionActivaProvider.notifier).reset();
                           context.go('/home');
                         },
+                        style: _fuchsiaButtonStyle,
                         child: const Text(AppStrings.volverInicio),
                       ),
                     ],

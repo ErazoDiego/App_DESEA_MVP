@@ -303,7 +303,7 @@ class AppStrings {
   // ─────────────────────────────────────────────────────────────
 
   /// Título de la pantalla de cartas guardadas.
-  static const String savedCardsTitle = 'Tus cartas guardadas';
+  static const String savedCardsTitle = 'Guardadas';
 
   /// Mensaje cuando no hay cartas guardadas.
   static const String savedCardsEmpty = 'Todavía no guardaste ninguna carta';
@@ -328,7 +328,7 @@ class AppStrings {
   // ─────────────────────────────────────────────────────────────
 
   /// Título de la pantalla de cartas personalizadas.
-  static const String misCartasTitle = 'Mis cartas personalizadas';
+  static const String misCartasTitle = 'Tus cartas';
 
   /// Mensaje cuando no hay cartas personalizadas.
   static const String misCartasEmpty =

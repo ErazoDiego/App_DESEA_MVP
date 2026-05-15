@@ -28,6 +28,23 @@ class LibrePlayScreen extends ConsumerStatefulWidget {
 class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _flashController;
+  bool _isCardFlipped = false;
+  String? _lastCardId;
+
+  ButtonStyle get _fuchsiaButtonStyle => ElevatedButton.styleFrom(
+        backgroundColor: AppColors.fuchsiaAccent,
+        foregroundColor: Colors.white,
+        elevation: 8,
+        shadowColor: AppColors.fuchsiaAccent.withValues(alpha: 0.35),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.3,
+        ),
+      );
 
   @override
   void initState() {
@@ -103,6 +120,11 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
     }
 
     final carta = state.currentCarta;
+    // Reset flip state when card changes
+    if (carta.id != _lastCardId) {
+      _isCardFlipped = false;
+      _lastCardId = carta.id;
+    }
     final hasTimer = carta.tiempoSegundos != null;
 
     return Scaffold(
@@ -136,8 +158,8 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                     ],
                   ),
 
-                  // Timer bar (if card has timer)
-                  if (hasTimer)
+                  // Timer bar (solo después de voltear la carta)
+                  if (hasTimer && _isCardFlipped)
                     TimerBar(
                       seconds: carta.tiempoSegundos!.inSeconds,
                       onComplete: () => notifier.nextCard(),
@@ -164,6 +186,7 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                         carta: carta,
                         nivel: 'libre',
                         isSaved: state.savedCardIds.contains(carta.id),
+                        onFlip: () => setState(() => _isCardFlipped = true),
                         onSwipeNext: state.canSkipAhead
                             ? () => notifier.nextCard()
                             : null,
@@ -187,15 +210,25 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                         children: [
                           TextButton.icon(
                             onPressed: () => notifier.pausar(),
-                            icon: const Icon(Icons.pause),
-                            label: const Text(AppStrings.pausar),
+                            icon: const Icon(Icons.pause,
+                                color: AppColors.fuchsiaAccent),
+                            label: const Text(
+                              AppStrings.pausar,
+                              style:
+                                  TextStyle(color: AppColors.fuchsiaAccent),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           if (state.canGoBack)
                             TextButton.icon(
                               onPressed: () => notifier.previousCard(),
-                              icon: const Icon(Icons.arrow_back),
-                              label: const Text(AppStrings.anterior),
+                              icon: const Icon(Icons.arrow_back,
+                                  color: AppColors.fuchsiaAccent),
+                              label: const Text(
+                                AppStrings.anterior,
+                                style: TextStyle(
+                                    color: AppColors.fuchsiaAccent),
+                              ),
                             ),
                         ],
                       ),
@@ -204,11 +237,13 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                       if (state.isLastCard)
                         ElevatedButton(
                           onPressed: () => notifier.nextCard(),
+                          style: _fuchsiaButtonStyle,
                           child: const Text(AppStrings.finalizar),
                         )
                       else
                         ElevatedButton(
                           onPressed: () => notifier.nextCard(),
+                          style: _fuchsiaButtonStyle,
                           child: const Text(AppStrings.siguiente),
                         ),
                     ],
@@ -236,6 +271,7 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () => notifier.pausar(),
+                        style: _fuchsiaButtonStyle,
                         child: const Text(AppStrings.continuar),
                       ),
                       const SizedBox(height: 12),
@@ -244,7 +280,11 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                           notifier.pausar();
                           notifier.playDeck(widget.mazo);
                         },
-                        child: const Text(AppStrings.reiniciarSesion),
+                        child: Text(
+                          AppStrings.reiniciarSesion,
+                          style: TextStyle(
+                              color: AppColors.fuchsiaAccent),
+                        ),
                       ),
                     ],
                   ),
@@ -270,6 +310,7 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => context.go('/game/libre'),
+                        style: _fuchsiaButtonStyle,
                         child: const Text(AppStrings.volverInicio),
                       ),
                     ],

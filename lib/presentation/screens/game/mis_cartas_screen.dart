@@ -138,6 +138,7 @@ class _MisCartasScreenState extends ConsumerState<MisCartasScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.misCartasTitle),
+        centerTitle: true,
         leading: CircularBackButton(
           onPressed: () => context.go('/game-hub'),
         ),
@@ -232,7 +233,7 @@ class _MisCartasScreenState extends ConsumerState<MisCartasScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 0.72,
+                    childAspectRatio: 683 / 1024, // coincide con frente_fucsia.jpg
                   ),
                   itemCount: _filteredCards.length,
                   itemBuilder: (context, index) {

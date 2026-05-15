@@ -239,7 +239,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(
-        find.text('¿Cuál es tu mayor fantasía?'),
+        find.text('"¿Cuál es tu mayor fantasía?"'),
         findsOneWidget,
       );
     });
@@ -293,6 +293,10 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
+      // Flip card to reveal content and start timer
+      await tester.tap(find.byType(CartaCard));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
     });
 
@@ -321,7 +325,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(
-        find.text('¿Cuál es tu mayor fantasía?'),
+        find.text('"¿Cuál es tu mayor fantasía?"'),
         findsOneWidget,
       );
 
@@ -332,7 +336,7 @@ void main() {
       await tester.tap(find.byType(CartaCard));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
-      expect(find.text('Hacé una broma'), findsOneWidget);
+      expect(find.text('"Hacé una broma"'), findsOneWidget);
     });
 
     testWidgets('can go back to previous card', (tester) async {
@@ -366,7 +370,7 @@ void main() {
       await tester.tap(find.byType(CartaCard));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
-      expect(find.text('Hacé una broma'), findsOneWidget);
+      expect(find.text('"Hacé una broma"'), findsOneWidget);
 
       await tester.tap(find.text(AppStrings.anterior));
       await tester.pumpAndSettle();
@@ -376,7 +380,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(
-        find.text('¿Cuál es tu mayor fantasía?'),
+        find.text('"¿Cuál es tu mayor fantasía?"'),
         findsOneWidget,
       );
     });

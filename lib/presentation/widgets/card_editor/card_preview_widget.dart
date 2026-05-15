@@ -94,14 +94,7 @@ class CardPreviewWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                _accentColor.withValues(alpha: 0.55),
-                AppColors.surface,
-              ],
-            ),
+            color: AppColors.surface,
             boxShadow: [
               BoxShadow(
                 color: _accentColor.withValues(alpha: 0.25),
@@ -110,103 +103,144 @@ class CardPreviewWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Column(
-              children: [
-                // ── Top: category centered ─────────────────────────
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              // ── Imagen de fondo ────────────────────────────────────
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/cartas/frente_fucsia.jpg',
+                  fit: BoxFit.cover,
+                  color: Colors.black.withValues(alpha: 0.2),
+                  colorBlendMode: BlendMode.darken,
+                ),
+              ),
+              // ── Contenido ──────────────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Column(
                   children: [
-                    Icon(_categoryIcon, size: 16, color: _accentColor),
-                    const SizedBox(width: 4),
-                    Flexible(
+                    // ── Top: category badge ──────────────────────────
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _accentColor.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: _accentColor.withValues(alpha: 0.4),
+                          width: 1,
+                        ),
+                      ),
                       child: Text(
                         _tipoLabel.toUpperCase(),
-                        textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontFamily: 'Rajdhani',
+                          fontWeight: FontWeight.w700,
                           color: _accentColor,
                           fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.2,
+                          letterSpacing: 1.8,
                         ),
                       ),
                     ),
-                  ],
-                ),
 
-                const Spacer(),
+                    const Spacer(),
 
-                // ── Center: texto centrado, crece desde el centro ──
-                if (texto.isNotEmpty)
-                  Text(
-                    texto,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      height: 1.3,
-                    ),
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                else
-                  Text(
-                    'Escribí la\ninstrucción...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.3),
-                      fontSize: 13,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-
-                const Spacer(),
-
-                // ── Bottom: level + time centrado ──────────────────
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: _levelColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      nivel[0].toUpperCase() + nivel.substring(1),
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.7),
-                        fontSize: 10,
-                      ),
-                    ),
-                    if (tiempoSegundos != null) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
+                    // ── Center: texto grande ─────────────────────────
+                    if (texto.isNotEmpty)
+                      Text(
+                        texto,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Cormorant Garamond',
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.white,
+                          fontSize: 22,
+                          height: 1.25,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black87,
+                              blurRadius: 6,
+                              offset: Offset(1, 2),
+                            ),
+                            Shadow(
+                              color: Colors.black38,
+                              blurRadius: 12,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(6),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    else
+                      Text(
+                        'Escribí la\ninstrucción...',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Cormorant Garamond',
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.white.withValues(alpha: 0.3),
+                          fontSize: 14,
                         ),
-                        child: Text(
-                          '${tiempoSegundos}s',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            fontSize: 10,
+                      ),
+
+                    const Spacer(),
+
+                    // ── Bottom: level + time limpio ──────────────────
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: _levelColor,
+                            shape: BoxShape.circle,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 6),
+                        Text(
+                          nivel[0].toUpperCase() + nivel.substring(1),
+                          style: TextStyle(
+                            fontFamily: 'Rajdhani',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 11,
+                          ),
+                        ),
+                        if (tiempoSegundos != null) ...[
+                          const SizedBox(width: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '${tiempoSegundos}s',
+                              style: TextStyle(
+                                fontFamily: 'Rajdhani',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white.withValues(alpha: 0.6),
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
