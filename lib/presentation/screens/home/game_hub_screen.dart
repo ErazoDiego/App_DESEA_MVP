@@ -104,15 +104,6 @@ class _Header extends StatelessWidget {
             CircularBackButton(
               onPressed: () => context.go('/home'),
             ),
-            const SizedBox(width: 8),
-            Text(
-              AppStrings.appName,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.7),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ],
         ),
       ),
@@ -437,10 +428,11 @@ class _CardsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _LibraryCard(
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: _LibraryCard(
             icon: Icons.bookmark,
             label: AppStrings.savedCardsHubTitle,
             count: guardadasCount,
@@ -458,7 +450,8 @@ class _CardsGrid extends StatelessWidget {
             onTap: onMisCartasTap,
           ),
         ),
-      ],
+        ],
+      ),
     );
   }
 }
