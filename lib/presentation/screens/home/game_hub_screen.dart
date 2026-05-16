@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../data/datasources/hive_datasource.dart';
 import '../../widgets/circular_back_button.dart';
@@ -47,10 +46,11 @@ class GameHubScreen extends ConsumerWidget {
             const _Header(),
             const _HeroSection(),
             const _MoodRow(),
-            _SectionHeader(title: AppStrings.gameHubTitle),
             _SesionCard(onTap: () => context.go('/game/sesion-confirm/default')),
+            const _HubDivider(),
             const SizedBox(height: 10),
             _LibreCard(onTap: () => context.go('/game/libre')),
+            const _HubDivider(),
             _TusCartasHeader(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -75,7 +75,7 @@ class GameHubScreen extends ConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 60),
           ],
         ),
       ),
@@ -174,7 +174,7 @@ class _HeroSection extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// _MoodRow
+// _MoodRow — decorativo, no interactivo
 // ---------------------------------------------------------------------------
 
 class _MoodRow extends StatelessWidget {
@@ -185,65 +185,41 @@ class _MoodRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: _MoodCard(
-              icon: Icons.whatshot,
-              label: AppStrings.moodPicante,
-              color: _accentViolet,
-            ),
-          ),
+          _MoodPill(icon: Icons.whatshot, label: AppStrings.moodPicante),
           const SizedBox(width: 12),
-          Expanded(
-            child: _MoodCard(
-              icon: Icons.celebration,
-              label: AppStrings.moodDivertido,
-              color: _chipPurple,
-            ),
-          ),
+          _MoodPill(icon: Icons.celebration, label: AppStrings.moodDivertido),
         ],
       ),
     );
   }
 }
 
-class _MoodCard extends StatelessWidget {
+class _MoodPill extends StatelessWidget {
   final IconData icon;
   final String label;
-  final Color color;
 
-  const _MoodCard({
-    required this.icon,
-    required this.label,
-    required this.color,
-  });
+  const _MoodPill({required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: _cardSurface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _cardBorder),
+        color: const Color(0xFF1A0025),
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(height: 8),
+          Icon(icon, size: 16, color: const Color(0xFF9060C0)),
+          const SizedBox(width: 6),
           Text(
             label,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 14,
+            style: const TextStyle(
+              color: Color(0xFF9060C0),
+              fontSize: 13,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -254,29 +230,19 @@ class _MoodCard extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// _SectionHeader
+// _HubDivider
 // ---------------------------------------------------------------------------
 
-class _SectionHeader extends StatelessWidget {
-  final String title;
-
-  const _SectionHeader({required this.title});
+class _HubDivider extends StatelessWidget {
+  const _HubDivider();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 14),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.55),
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.0,
-          ),
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+      child: Container(
+        height: 0.5,
+        color: const Color(0xFF2A0040),
       ),
     );
   }
@@ -297,18 +263,19 @@ class _SesionCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: _cardSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: _accentViolet.withValues(alpha: 0.7),
-              width: 1.5,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _cardSurface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: _accentViolet.withValues(alpha: 0.7),
+                width: 1.5,
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // ── Badge "Recomendado" ──
               Container(
@@ -331,33 +298,29 @@ class _SesionCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // ── Título + descripción ──
+              // ── Título ──
               Text(
                 AppStrings.modoSesion,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                AppStrings.modoSesionDesc,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.55),
-                  fontSize: 14,
-                ),
-              ),
               const SizedBox(height: 12),
 
-              // ── Chips ──
-              Row(
-                children: [
-                  _Chip(label: AppStrings.gameHubSesionDuracion),
-                  const SizedBox(width: 8),
-                  _Chip(label: AppStrings.gameHubSesionTipo),
-                ],
+              // ── Metadata: single line ──
+              Text(
+                '20 cartas · arco progresivo · ~30 min',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.4),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -381,21 +344,23 @@ class _LibreCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: _cardSurface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: _cardBorder),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _cardSurface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: _cardBorder),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       AppStrings.modoLibre,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -405,6 +370,7 @@ class _LibreCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       AppStrings.libreCardDescription,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.55),
                         fontSize: 14,
@@ -419,38 +385,6 @@ class _LibreCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// _Chip
-// ---------------------------------------------------------------------------
-
-class _Chip extends StatelessWidget {
-  final String label;
-
-  const _Chip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: _chipPurple.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: _chipPurple.withValues(alpha: 0.20),
-        ),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: _chipPurple.withValues(alpha: 0.8),
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -553,38 +487,45 @@ class _LibraryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: _cardSurface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: _cardBorder),
         ),
-        child: Column(
+        child: Row(
           children: [
             Container(
-              width: 52,
-              height: 52,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: color, size: 26),
+              child: Icon(icon, color: color, size: 22),
             ),
-            const SizedBox(height: 10),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.7),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '$count',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.35),
-                fontSize: 13,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      color: Color(0xFFC060FF),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$count ${count == 1 ? 'carta' : 'cartas'}',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.35),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
