@@ -10,6 +10,7 @@ import 'package:desea_mvp/presentation/providers/libre_providers.dart';
 import 'package:desea_mvp/presentation/providers/sesion_providers.dart';
 import 'package:desea_mvp/presentation/screens/game/libre_play_screen.dart';
 import 'package:desea_mvp/presentation/widgets/session/carta_card.dart';
+import 'package:desea_mvp/presentation/widgets/session/pause_modal.dart';
 import 'package:desea_mvp/core/constants/app_strings.dart';
 
 // ---------------------------------------------------------------------------
@@ -409,6 +410,36 @@ void main() {
       await tester.pump();
 
       expect(find.text(AppStrings.continuar), findsOneWidget);
+    });
+
+    testWidgets('shows PauseModal when paused (not inline overlay)',
+        (tester) async {
+      final cartaBox = seededCartaBox();
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            cartaBoxProvider2.overrideWithValue(cartaBox),
+            personalizadasBoxProvider2
+                .overrideWithValue(_FakeBox<CartaPersonalizadaModel>()),
+            guardadasBoxProvider2.overrideWithValue(_FakeBox<CartaGuardadaModel>()),
+          ],
+          child: MaterialApp(
+            home: LibrePlayScreen(
+              mazo: _testMazo(cartaIds: ['carta_1']),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(AppStrings.pausar));
+      await tester.pump();
+
+      // This should find PauseModal — currently fails because
+      // LibrePlayScreen uses an inline Container, not PauseModal
+      expect(find.byType(PauseModal), findsOneWidget);
     });
 
     testWidgets('shows completion overlay on last card', (tester) async {

@@ -107,9 +107,8 @@ class SesionActivaState {
   /// Indica si estamos en la última carta.
   bool get isLastCard => currentIndex >= totalCartas - 1;
 
-  /// Indica si se puede retroceder (no es la primera y la carta anterior
-  /// no fue guardada).
-  bool get canGoBack => !isFirstCard && !savedCardIds.contains(cartas[currentIndex - 1].id);
+  /// Indica si se puede retroceder (no es la primera carta).
+  bool get canGoBack => !isFirstCard;
 
   /// Indica si se puede saltar a la siguiente carta.
   bool get canSkipAhead => !isLastCard;

@@ -150,6 +150,7 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                     TimerBar(
                       seconds: state.remainingSeconds!,
                       onComplete: () => notifier.nextCard(),
+                      isPaused: state.isPaused,
                     ),
 
                   const SizedBox(height: 16),
@@ -188,35 +189,41 @@ class _CartaActivaScreenState extends ConsumerState<CartaActivaScreen>
                     ),
                   ),
 
-                  // Bottom navigation
+                  // Bottom navigation: Anterior | Pausa | Siguiente
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      if (state.canGoBack) ...[
+                        ElevatedButton(
+                          onPressed: () => notifier.previousCard(),
+                          style: _fuchsiaButtonStyle,
+                          child: const Text(AppStrings.anterior),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
                       TextButton.icon(
                         onPressed: () => notifier.pausar(),
                         icon: const Icon(Icons.pause,
                             color: AppColors.fuchsiaAccent),
                         label: const Text(
                           AppStrings.pausar,
-                          style: TextStyle(color: AppColors.fuchsiaAccent),
+                          style:
+                              TextStyle(color: AppColors.fuchsiaAccent),
                         ),
                       ),
-                      Row(
-                        children: [
-                          if (state.isLastCard)
-                            ElevatedButton(
-                              onPressed: () => notifier.nextCard(),
-                              style: _fuchsiaButtonStyle,
-                              child: const Text(AppStrings.finalizar),
-                            )
-                          else
-                            ElevatedButton(
-                              onPressed: () => notifier.nextCard(),
-                              style: _fuchsiaButtonStyle,
-                              child: const Text(AppStrings.siguiente),
-                            ),
-                        ],
-                      ),
+                      const SizedBox(width: 16),
+                      if (state.isLastCard)
+                        ElevatedButton(
+                          onPressed: () => notifier.nextCard(),
+                          style: _fuchsiaButtonStyle,
+                          child: const Text(AppStrings.finalizar),
+                        )
+                      else
+                        ElevatedButton(
+                          onPressed: () => notifier.nextCard(),
+                          style: _fuchsiaButtonStyle,
+                          child: const Text(AppStrings.siguiente),
+                        ),
                     ],
                   ),
                 ],

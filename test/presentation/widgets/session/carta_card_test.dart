@@ -110,6 +110,47 @@ void main() {
       expect(find.byIcon(Icons.bookmark), findsOneWidget);
     });
 
+    testWidgets('hint \"Toca para revelar\" está en el tercio inferior de la carta',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: CartaCard(
+            carta: testCarta,
+            nivel: 'suave',
+          ),
+        ),
+      ));
+
+      final cardRect = tester.getRect(find.byType(CartaCard));
+      final textRect = tester.getRect(find.text('Toca para revelar'));
+      final bottomThirdThreshold =
+          cardRect.top + cardRect.height * 2 / 3;
+
+      // El texto debe estar en el tercio inferior de la carta
+      expect(textRect.center.dy, greaterThan(bottomThirdThreshold));
+    });
+
+    testWidgets('icono táctil también está en el tercio inferior de la carta',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: CartaCard(
+            carta: testCarta,
+            nivel: 'suave',
+          ),
+        ),
+      ));
+
+      final cardRect = tester.getRect(find.byType(CartaCard));
+      final iconRect = tester.getRect(find.byIcon(Icons.touch_app));
+      final bottomThirdThreshold =
+          cardRect.top + cardRect.height * 2 / 3;
+
+      // El icono debe estar en el tercio inferior de la carta
+      // (triangulación: confirma que toda la column se movió)
+      expect(iconRect.center.dy, greaterThan(bottomThirdThreshold));
+    });
+
     testWidgets('does not show save button when onSave is null',
         (tester) async {
       await tester.pumpWidget(MaterialApp(

@@ -75,12 +75,9 @@ class GameHubScreen extends ConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 100),
           ],
         ),
-      ),
-      bottomNavigationBar: _BottomCta(
-        onTap: () => context.go('/game/sesion-confirm/default'),
       ),
     );
   }
@@ -321,7 +318,7 @@ class _SesionCard extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// _LibreCard — secundaria
+// _LibreCard — misma altura y borde que SesionCard, sin badge
 // ---------------------------------------------------------------------------
 
 class _LibreCard extends StatelessWidget {
@@ -341,39 +338,40 @@ class _LibreCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: _cardSurface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: _cardBorder),
+              border: Border.all(
+                color: _accentViolet.withValues(alpha: 0.7),
+                width: 1.5,
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppStrings.modoLibre,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppStrings.libreCardDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.55),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // ── Spacer que reemplaza el badge de SesionCard — misma altura ──
+              const SizedBox(height: 28),
+              const SizedBox(height: 12),
+
+              // ── Título ──
+              Text(
+                AppStrings.modoLibre,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.white.withValues(alpha: 0.3),
+              const SizedBox(height: 12),
+
+              // ── Descripción ──
+              Text(
+                AppStrings.libreCardDescription,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.55),
+                  fontSize: 14,
+                ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -528,60 +526,4 @@ class _LibraryCard extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// _BottomCta
-// ---------------------------------------------------------------------------
 
-class _BottomCta extends StatelessWidget {
-  final VoidCallback onTap;
-
-  const _BottomCta({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-      decoration: BoxDecoration(
-        color: _hubBackground,
-        border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
-        ),
-      ),
-      child: Material(
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: _accentViolet.withValues(alpha: 0.5),
-                width: 1.5,
-              ),
-              color: _accentViolet.withValues(alpha: 0.10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.play_arrow_rounded,
-                    color: _accentViolet, size: 22),
-                const SizedBox(width: 8),
-                Text(
-                  AppStrings.gameHubCtaSesion,
-                  style: TextStyle(
-                    color: _accentViolet,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

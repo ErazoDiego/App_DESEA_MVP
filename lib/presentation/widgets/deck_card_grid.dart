@@ -55,12 +55,14 @@ class DeckCardGrid extends StatelessWidget {
   final List<Mazo> mazos;
   final void Function(Mazo) onTap;
   final void Function(Mazo) onDelete;
+  final void Function(Mazo) onEdit;
 
   const DeckCardGrid({
     super.key,
     required this.mazos,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit,
   });
 
   @override
@@ -82,6 +84,7 @@ class DeckCardGrid extends StatelessWidget {
           mazo: mazo,
           onTap: () => onTap(mazo),
           onDelete: () => onDelete(mazo),
+          onEdit: () => onEdit(mazo),
         );
       },
     );
@@ -96,12 +99,14 @@ class _DeckCardTile extends StatefulWidget {
   final Mazo mazo;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   const _DeckCardTile({
     super.key,
     required this.mazo,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit,
   });
 
   @override
@@ -114,6 +119,24 @@ class _DeckCardTileState extends State<_DeckCardTile> {
   Color get _accent => _accentFor(widget.mazo.nivel);
   Color get _glow => _glowFor(widget.mazo.nivel);
 
+  void _showContextMenu(BuildContext context) {
+    showMenu<String>(
+      context: context,
+      position: const RelativeRect.fromLTRB(200, 200, 200, 200),
+      items: [
+        const PopupMenuItem(value: 'jugar', child: Text('Jugar')),
+        const PopupMenuItem(value: 'editar', child: Text('Editar mazo')),
+      ],
+    ).then((String? value) {
+      switch (value) {
+        case 'jugar':
+          widget.onTap();
+        case 'editar':
+          widget.onEdit();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -123,6 +146,7 @@ class _DeckCardTileState extends State<_DeckCardTile> {
         widget.onTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),
+      onLongPress: () => _showContextMenu(context),
       child: AnimatedScale(
         scale: _isPressed ? 0.95 : 1.0,
         duration: const Duration(milliseconds: 120),
@@ -167,7 +191,28 @@ class _DeckCardTileState extends State<_DeckCardTile> {
             ),
             // Main card (front)
             _buildMainCard(),
-            // Delete button overlay
+            // Edit button overlay (top-left)
+            Positioned(
+              top: 4,
+              left: 4,
+              child: Material(
+                color: Colors.black.withValues(alpha: 0.75),
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: widget.onEdit,
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Delete button overlay (top-right)
             Positioned(
               top: 4,
               right: 4,

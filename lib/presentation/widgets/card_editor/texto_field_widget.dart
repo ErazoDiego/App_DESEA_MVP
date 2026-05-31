@@ -6,14 +6,15 @@ import '../../../core/constants/app_colors.dart';
 // ---------------------------------------------------------------------------
 
 /// Gaming-styled text input with translucent background and fuchsia glow on
-/// focus via [FocusNode]. Supports [maxLines], [validator] passthrough, and
-/// custom [keyboardType].
+/// focus via [FocusNode]. Supports [maxLines], [validator], [keyboardType]
+/// passthrough, and optional [maxLength] with automatic character counter.
 class GamingTextField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final int maxLines;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
+  final int? maxLength;
 
   const GamingTextField({
     super.key,
@@ -22,6 +23,7 @@ class GamingTextField extends StatefulWidget {
     this.maxLines = 1,
     this.validator,
     this.keyboardType,
+    this.maxLength,
   });
 
   @override
@@ -67,6 +69,7 @@ class _GamingTextFieldState extends State<GamingTextField> {
             controller: widget.controller,
             focusNode: _focusNode,
             maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
             keyboardType: widget.keyboardType,
             validator: widget.validator,
             style: const TextStyle(color: Colors.white),

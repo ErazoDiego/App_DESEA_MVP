@@ -7,6 +7,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../domain/entities/mazo.dart';
 import '../../providers/libre_providers.dart';
 import '../../widgets/session/carta_card.dart';
+import '../../widgets/session/pause_modal.dart';
 import '../../widgets/session/timer_bar.dart';
 
 /// Pantalla de juego para el modo libre.
@@ -163,6 +164,7 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                     TimerBar(
                       seconds: carta.tiempoSegundos!.inSeconds,
                       onComplete: () => notifier.nextCard(),
+                      isPaused: state.isPaused,
                     ),
 
                   const SizedBox(height: 16),
@@ -201,39 +203,29 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
                     ),
                   ),
 
-                  // Bottom navigation
+                  // Bottom navigation: Anterior | Pausa | Siguiente
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Pause + Previous
-                      Row(
-                        children: [
-                          TextButton.icon(
-                            onPressed: () => notifier.pausar(),
-                            icon: const Icon(Icons.pause,
-                                color: AppColors.fuchsiaAccent),
-                            label: const Text(
-                              AppStrings.pausar,
-                              style:
-                                  TextStyle(color: AppColors.fuchsiaAccent),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          if (state.canGoBack)
-                            TextButton.icon(
-                              onPressed: () => notifier.previousCard(),
-                              icon: const Icon(Icons.arrow_back,
-                                  color: AppColors.fuchsiaAccent),
-                              label: const Text(
-                                AppStrings.anterior,
-                                style: TextStyle(
-                                    color: AppColors.fuchsiaAccent),
-                              ),
-                            ),
-                        ],
+                      if (state.canGoBack) ...[
+                        ElevatedButton(
+                          onPressed: () => notifier.previousCard(),
+                          style: _fuchsiaButtonStyle,
+                          child: const Text(AppStrings.anterior),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
+                      TextButton.icon(
+                        onPressed: () => notifier.pausar(),
+                        icon: const Icon(Icons.pause,
+                            color: AppColors.fuchsiaAccent),
+                        label: const Text(
+                          AppStrings.pausar,
+                          style:
+                              TextStyle(color: AppColors.fuchsiaAccent),
+                        ),
                       ),
-
-                      // Next / Finalizar
+                      const SizedBox(width: 16),
                       if (state.isLastCard)
                         ElevatedButton(
                           onPressed: () => notifier.nextCard(),
@@ -256,38 +248,12 @@ class _LibrePlayScreenState extends ConsumerState<LibrePlayScreen>
             if (state.isPaused)
               Container(
                 color: Colors.black54,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        AppStrings.sesionPausada,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: () => notifier.pausar(),
-                        style: _fuchsiaButtonStyle,
-                        child: const Text(AppStrings.continuar),
-                      ),
-                      const SizedBox(height: 12),
-                      TextButton(
-                        onPressed: () {
-                          notifier.pausar();
-                          notifier.playDeck(widget.mazo);
-                        },
-                        child: Text(
-                          AppStrings.reiniciarSesion,
-                          style: TextStyle(
-                              color: AppColors.fuchsiaAccent),
-                        ),
-                      ),
-                    ],
-                  ),
+                child: PauseModal(
+                  onContinue: () => notifier.pausar(),
+                  onRestart: () {
+                    notifier.pausar();
+                    notifier.playDeck(widget.mazo);
+                  },
                 ),
               ),
 

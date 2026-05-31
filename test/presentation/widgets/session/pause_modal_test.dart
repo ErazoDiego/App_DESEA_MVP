@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:desea_mvp/core/constants/app_colors.dart';
 import 'package:desea_mvp/presentation/widgets/session/pause_modal.dart';
 
+void _noop() {}
+
 void main() {
   group('PauseModal', () {
     testWidgets('renders title and card info', (tester) async {
@@ -73,6 +75,56 @@ void main() {
 
       await tester.tap(find.text('Reiniciar sesión'));
       expect(restartCalls, 1);
+    });
+
+    testWidgets('hides card info line when currentCard and fase are null',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: const PauseModal(
+            currentCard: null,
+            fase: null,
+            onContinue: _noop,
+            onRestart: _noop,
+          ),
+        ),
+      ));
+
+      // "Carta" text should not appear when both are null
+      expect(find.textContaining('Carta'), findsNothing);
+    });
+
+    testWidgets('hides card info when only one param is provided',
+        (tester) async {
+      // Si solo uno es non-null, la info debe ocultarse
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: const PauseModal(
+            currentCard: null,
+            fase: 'tension',
+            onContinue: _noop,
+            onRestart: _noop,
+          ),
+        ),
+      ));
+
+      expect(find.textContaining('Carta'), findsNothing);
+    });
+
+    testWidgets('shows card info line when currentCard and fase are provided',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: const PauseModal(
+            currentCard: 3,
+            fase: 'tension',
+            onContinue: _noop,
+            onRestart: _noop,
+          ),
+        ),
+      ));
+
+      expect(find.text('Carta 3 · tension'), findsOneWidget);
     });
 
     testWidgets('displays fuchsia accent on title', (tester) async {

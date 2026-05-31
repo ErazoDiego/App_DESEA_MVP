@@ -160,6 +160,7 @@ class _CardFormWidgetState extends ConsumerState<CardFormWidget> {
                 controller: _textoController,
                 label: AppStrings.libreInstruccionLabel,
                 maxLines: 3,
+                maxLength: 200,
                 validator: (v) => (v == null || v.trim().isEmpty)
                     ? AppStrings.libreInstruccionRequired
                     : null,

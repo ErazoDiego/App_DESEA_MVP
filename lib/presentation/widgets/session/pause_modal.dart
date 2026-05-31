@@ -5,12 +5,17 @@ import '../../../core/constants/app_colors.dart';
 ///
 /// Muestra información de la carta actual y botones para
 /// continuar o reiniciar la sesión.
+///
+/// [currentCard] y [fase] son opcionales: si ambos son null
+/// (o se omiten), se omite la línea de información de carta.
 class PauseModal extends StatelessWidget {
   /// Número de la carta actual (1-based para display).
-  final int currentCard;
+  /// Opcional: si es null junto con [fase], se omite la info de carta.
+  final int? currentCard;
 
   /// Fase narrativa actual.
-  final String fase;
+  /// Opcional: si es null junto con [currentCard], se omite la info de carta.
+  final String? fase;
 
   /// Callback para continuar la sesión.
   final VoidCallback onContinue;
@@ -20,8 +25,8 @@ class PauseModal extends StatelessWidget {
 
   const PauseModal({
     super.key,
-    required this.currentCard,
-    required this.fase,
+    this.currentCard,
+    this.fase,
     required this.onContinue,
     required this.onRestart,
   });
@@ -41,9 +46,9 @@ class PauseModal extends StatelessWidget {
                       .textTheme
                       .headlineSmall
                       ?.copyWith(color: AppColors.fuchsiaAccent)),
-              const SizedBox(height: 8),
-              Text('Carta $currentCard · $fase'),
-              const SizedBox(height: 24),
+              if (currentCard != null && fase != null)
+                Text('Carta $currentCard · $fase'),
+              SizedBox(height: currentCard != null && fase != null ? 24 : 8),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

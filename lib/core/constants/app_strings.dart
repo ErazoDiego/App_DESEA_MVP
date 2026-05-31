@@ -37,7 +37,7 @@ class AppStrings {
   // ─────────────────────────────────────────────────────────────
 
   /// Línea de estadísticas mostrada en la pantalla de bienvenida.
-  static const String statsLine = '+150 cartas · 3 niveles · 2 mazos';
+  static const String statsLine = '+150 cartas · 3 niveles · 2 modos';
 
   /// Botón para comenzar el flujo de onboarding.
   static const String comenzar = 'Comenzar';
@@ -125,8 +125,6 @@ class AppStrings {
   /// Subtítulo de inmersión mostrado en la sección hero del hub.
   static const String gameHubImmersionSubtitle = 'Tu noche empieza acá';
 
-  /// Texto del CTA en la sección hero para empezar una sesión.
-  static const String gameHubCtaSesion = 'Empezar sesión';
 
   /// Mood cards para la sección hero.
   static const String moodPicante = 'Picante';

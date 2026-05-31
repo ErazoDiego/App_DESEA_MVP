@@ -292,22 +292,21 @@ void main() {
         expect(savedGuardada.nivel, 'suave');
       });
 
-      test('cannot navigate back to a saved card', () async {
+      test('can navigate back even when previous card is saved', () async {
         final notifier = container.read(sesionActivaProvider.notifier);
         await notifier.iniciarSesion();
 
-        // Save card 0, advance to 1, save card 1 (the "previous" card),
-        // then advance to 2. Previous card (index 1) is saved → canGoBack false.
+        // Save card 0, advance to 1, save card 1, advance to 2.
         await notifier.guardarCartaActual(); // save index 0
         notifier.nextCard();                  // now at index 1
         await notifier.guardarCartaActual(); // save index 1
         notifier.nextCard();                  // now at index 2
 
         expect(container.read(sesionActivaProvider).currentIndex, 2);
-        expect(container.read(sesionActivaProvider).canGoBack, false);
+        expect(container.read(sesionActivaProvider).canGoBack, true);
 
         notifier.previousCard();
-        expect(container.read(sesionActivaProvider).currentIndex, 2);
+        expect(container.read(sesionActivaProvider).currentIndex, 1);
       });
     });
 

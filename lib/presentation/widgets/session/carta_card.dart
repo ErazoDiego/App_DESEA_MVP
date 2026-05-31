@@ -166,22 +166,26 @@ class _CartaCardState extends State<CartaCard>
               ),
             ),
           ),
-          // Hint centrado "Toca para revelar"
-          const Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.touch_app, color: Colors.white60, size: 36),
-                SizedBox(height: 10),
-                Text(
-                  'Toca para revelar',
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 15,
-                    letterSpacing: 0.5,
+          // Hint "Toca para revelar" en la parte inferior
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 119),
+              child: const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.touch_app, color: Colors.white, size: 36),
+                  SizedBox(height: 10),
+                  Text(
+                    'Toca para revelar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

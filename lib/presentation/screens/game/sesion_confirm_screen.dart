@@ -158,8 +158,6 @@ class _SesionConfirmScreenState extends ConsumerState<SesionConfirmScreen> {
             _StatItem(value: '20', label: 'cartas'),
             _StatDivider(),
             _StatItem(value: '3', label: 'niveles'),
-            _StatDivider(),
-            _StatItem(value: '2', label: 'mazos'),
           ],
         ),
       ),

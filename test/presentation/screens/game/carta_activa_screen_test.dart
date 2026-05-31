@@ -356,5 +356,102 @@ void main() {
       // The CartaCard should show a save button (Guardar)
       expect(find.text(AppStrings.guardar), findsOneWidget);
     });
+
+    testWidgets('shows Anterior button when not on first card', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            cartaBoxProvider.overrideWithValue(AsyncValue.data(testCartasBox)),
+            sesionBoxProvider.overrideWithValue(AsyncValue.data(testSesionesBox)),
+            cartaRepositoryProvider.overrideWithValue(
+              FakeCartaRepository(_buildTestCartas()),
+            ),
+            sesionRepositoryProvider.overrideWithValue(
+              FakeSesionRepository(),
+            ),
+            guardadasBoxProvider2.overrideWithValue(testGuardadasBox),
+          ],
+          child: const MaterialApp(home: CartaActivaScreen()),
+        ),
+      );
+      await tester.pump();
+
+      // Start session
+      await tester.tap(find.text(AppStrings.iniciarSesion));
+      await tester.pumpAndSettle();
+
+      // Advance to second card
+      await tester.tap(find.text(AppStrings.siguiente));
+      await tester.pumpAndSettle();
+
+      // Now on card 2 → Anterior button should be visible
+      expect(find.text(AppStrings.anterior), findsOneWidget);
+    });
+
+    testWidgets('hides Anterior button when on first card', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            cartaBoxProvider.overrideWithValue(AsyncValue.data(testCartasBox)),
+            sesionBoxProvider.overrideWithValue(AsyncValue.data(testSesionesBox)),
+            cartaRepositoryProvider.overrideWithValue(
+              FakeCartaRepository(_buildTestCartas()),
+            ),
+            sesionRepositoryProvider.overrideWithValue(
+              FakeSesionRepository(),
+            ),
+            guardadasBoxProvider2.overrideWithValue(testGuardadasBox),
+          ],
+          child: const MaterialApp(home: CartaActivaScreen()),
+        ),
+      );
+      await tester.pump();
+
+      // Start session — on first card, canGoBack = false
+      await tester.tap(find.text(AppStrings.iniciarSesion));
+      await tester.pumpAndSettle();
+
+      // Anterior should NOT be visible on first card
+      expect(find.text(AppStrings.anterior), findsNothing);
+    });
+
+    testWidgets('tapping Anterior navigates back to previous card',
+        (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            cartaBoxProvider.overrideWithValue(AsyncValue.data(testCartasBox)),
+            sesionBoxProvider.overrideWithValue(AsyncValue.data(testSesionesBox)),
+            cartaRepositoryProvider.overrideWithValue(
+              FakeCartaRepository(_buildTestCartas()),
+            ),
+            sesionRepositoryProvider.overrideWithValue(
+              FakeSesionRepository(),
+            ),
+            guardadasBoxProvider2.overrideWithValue(testGuardadasBox),
+          ],
+          child: const MaterialApp(home: CartaActivaScreen()),
+        ),
+      );
+      await tester.pump();
+
+      // Start session
+      await tester.tap(find.text(AppStrings.iniciarSesion));
+      await tester.pumpAndSettle();
+
+      // Advance to second card
+      await tester.tap(find.text(AppStrings.siguiente));
+      await tester.pumpAndSettle();
+
+      // Verify Anterior is visible on card 2
+      expect(find.text(AppStrings.anterior), findsOneWidget);
+
+      // Tap Anterior to go back
+      await tester.tap(find.text(AppStrings.anterior));
+      await tester.pumpAndSettle();
+
+      // Now back on card 1 → Anterior should be hidden again
+      expect(find.text(AppStrings.anterior), findsNothing);
+    });
   });
 }

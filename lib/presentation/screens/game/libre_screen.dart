@@ -83,6 +83,9 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
   List<_CardSourceItem> _allCardItems = [];
   bool _isLoadingCards = false;
 
+  // ── Editing state ──────────────────────────────────────────────
+  Mazo? _editingMazo;
+
   // ── Lifecycle ──────────────────────────────────────────────────
 
   @override
@@ -235,6 +238,18 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
     }
   }
 
+  // ── Editing ────────────────────────────────────────────────────
+
+  void _startEditing(Mazo mazo) {
+    _editingMazo = mazo;
+    _selectedCardIds.clear();
+    _selectedCardIds.addAll(mazo.cartaIds);
+    _deckNameController.text = mazo.nombre;
+    _cardFilter = 'Todas';
+    setState(() => _currentView = LibreView.cardBuilder);
+    _loadCardItems();
+  }
+
   // ── Actions ────────────────────────────────────────────────────
 
   Future<void> _saveDeck() async {
@@ -244,28 +259,37 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
 
     final repo = ref.read(mazoRepositoryProvider);
 
-    // Prevent duplicate names (case-insensitive).
-    final existing = await repo.getMazos();
-    final duplicate = existing.any(
-      (m) => m.nombre.toLowerCase() == name.toLowerCase(),
-    );
-    if (duplicate) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Ya existe un mazo con ese nombre')),
-        );
+    if (_editingMazo != null) {
+      // Editing existing mazo — skip duplicate check, update in place
+      final updated = _editingMazo!.copyWith(
+        nombre: name,
+        cartaIds: _selectedCardIds.toList(),
+      );
+      await repo.actualizarMazo(updated);
+    } else {
+      // Prevent duplicate names (case-insensitive).
+      final existing = await repo.getMazos();
+      final duplicate = existing.any(
+        (m) => m.nombre.toLowerCase() == name.toLowerCase(),
+      );
+      if (duplicate) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Ya existe un mazo con ese nombre')),
+          );
+        }
+        return;
       }
-      return;
+
+      final mazo = Mazo(
+        id: 'mazo_${DateTime.now().millisecondsSinceEpoch}',
+        nombre: name,
+        nivel: Nivel.suave,
+        cartaIds: _selectedCardIds.toList(),
+      );
+
+      await repo.crearMazo(mazo);
     }
-
-    final mazo = Mazo(
-      id: 'mazo_${DateTime.now().millisecondsSinceEpoch}',
-      nombre: name,
-      nivel: Nivel.suave,
-      cartaIds: _selectedCardIds.toList(),
-    );
-
-    await repo.crearMazo(mazo);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -275,6 +299,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
       _deckNameController.clear();
       _selectedCardIds.clear();
       _cardFilter = 'Todas';
+      _editingMazo = null;
       setState(() => _currentView = LibreView.deckList);
       await _loadMazos();
     }
@@ -306,6 +331,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
         leading: CircularBackButton(
           onPressed: () {
             if (_currentView != LibreView.deckList) {
+              _editingMazo = null;
               setState(() => _currentView = LibreView.deckList);
             } else {
               context.go('/game-hub');
@@ -348,7 +374,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
       case LibreView.deckList:
         return AppStrings.libre;
       case LibreView.cardBuilder:
-        return 'Crear Mazo';
+        return _editingMazo != null ? 'Editar Mazo' : 'Crear Mazo';
       case LibreView.createCard:
         return AppStrings.misCartasFormCreateTitle;
     }
@@ -415,6 +441,7 @@ class _LibreScreenState extends ConsumerState<LibreScreen> {
         extra: mazo,
       ),
       onDelete: _deleteMazo,
+      onEdit: _startEditing,
     );
   }
 

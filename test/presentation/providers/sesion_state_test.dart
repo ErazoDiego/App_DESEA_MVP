@@ -282,13 +282,13 @@ void main() {
         expect(state.canGoBack, true);
       });
 
-      test('false when previous card is saved', () {
+      test('true even when previous card is saved', () {
         final state = SesionActivaState(
           cartas: sampleCartas,
           currentIndex: 2,
           savedCardIds: {'suave_1'},
         );
-        expect(state.canGoBack, false);
+        expect(state.canGoBack, true);
       });
     });
 

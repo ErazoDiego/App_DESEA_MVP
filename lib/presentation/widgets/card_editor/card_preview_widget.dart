@@ -173,7 +173,7 @@ class CardPreviewWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        maxLines: 5,
+                        maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                       )
                     else

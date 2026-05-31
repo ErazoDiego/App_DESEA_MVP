@@ -11,6 +11,7 @@ import 'package:desea_mvp/hive_registrar.g.dart';
 import 'package:desea_mvp/presentation/providers/mazo_providers.dart';
 import 'package:desea_mvp/presentation/providers/libre_providers.dart';
 import 'package:desea_mvp/presentation/screens/game/libre_screen.dart';
+import 'package:desea_mvp/presentation/widgets/circular_back_button.dart';
 import 'package:desea_mvp/presentation/widgets/card_editor/card_preview_widget.dart';
 import 'package:desea_mvp/presentation/widgets/card_editor/category_selector_widget.dart';
 import 'package:desea_mvp/presentation/widgets/card_editor/level_selector_widget.dart';
@@ -554,6 +555,196 @@ void main() {
       expect(find.text(AppStrings.libreCartaCreada), findsOneWidget);
       expect(testPersBox.values.length, 1);
       expect(testPersBox.values.first.texto, 'Hacé algo divertido');
+    });
+  });
+
+  group('LibreScreen — Edit Deck', () {
+    testWidgets('long press shows edit option in context menu',
+        (tester) async {
+      final mazos = _buildTestMazos();
+      final fakeRepo = FakeMazoRepository(mazos);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            mazoRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+          child: const MaterialApp(home: LibreScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Long press on a mazo card
+      await tester.longPress(find.text('Rompehielos'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // Context menu should show edit option
+      expect(find.text('Editar mazo'), findsOneWidget);
+    });
+
+    testWidgets('edit option opens card builder with pre-selected cards',
+        (tester) async {
+      final mazos = _buildTestMazos();
+      final fakeRepo = FakeMazoRepository(mazos);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            mazoRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+          child: const MaterialApp(home: LibreScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Long press and select edit
+      await tester.longPress(find.text('Rompehielos'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      await tester.tap(find.text('Editar mazo'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // Card builder should be visible with pre-filled name
+      // AppBar shows "Editar Mazo"
+      expect(find.text('Editar Mazo'), findsAtLeast(1));
+      // Deck name pre-filled
+      expect(find.text('Rompehielos'), findsOneWidget);
+      expect(find.byType(TextField), findsOneWidget);
+    });
+
+    testWidgets(
+        'save in edit mode calls actualizarMazo instead of crearMazo',
+        (tester) async {
+      final mazos = _buildTestMazos();
+      final fakeRepo = FakeMazoRepository(mazos);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            mazoRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+          child: const MaterialApp(home: LibreScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Count initial mazos — 2
+      expect(mazos.length, 2);
+
+      // Long press -> Edit
+      await tester.longPress(find.text('Rompehielos'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      await tester.tap(find.text('Editar mazo'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // Card builder shows with pre-selected cards (3)
+      expect(find.textContaining('Añadir'), findsOneWidget);
+
+      // Tap save button
+      await tester.tap(find.textContaining('Añadir'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Should NOT have created a new mazo (still 2) — used actualizarMazo
+      expect(mazos.length, 2);
+
+      // The mazo's cartaIds should now be the selected ones
+      expect(mazos.first.cartaIds, ['carta_1', 'carta_2', 'carta_3']);
+
+      // Should show success snackbar
+      expect(find.text('¡Mazo guardado!'), findsOneWidget);
+    });
+
+    testWidgets(
+        'edit mazo and verify data is persisted in repository',
+        (tester) async {
+      final mazos = _buildTestMazos();
+      final fakeRepo = FakeMazoRepository(mazos);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            mazoRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+          child: const MaterialApp(home: LibreScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Verify initial state
+      expect(mazos.first.nombre, 'Rompehielos');
+      expect(mazos.first.cartaIds, ['carta_1', 'carta_2', 'carta_3']);
+
+      // Edit 'Rompehielos'
+      await tester.longPress(find.text('Rompehielos'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      await tester.tap(find.text('Editar mazo'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // The deck name is pre-filled
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.controller?.text, 'Rompehielos');
+
+      // Save
+      await tester.tap(find.textContaining('Añadir'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Verify in repository: mazo still exists with same data (no cards to change)
+      // but was updated via actualizarMazo
+      final updated = mazos.first;
+      expect(updated.id, 'mazo_1');
+      expect(updated.nombre, 'Rompehielos');
+      expect(updated.cartaIds, ['carta_1', 'carta_2', 'carta_3']);
+      expect(mazos.length, 2); // no duplicate created
+    });
+
+    testWidgets('cancel in edit mode does not modify the existing mazo',
+        (tester) async {
+      final mazos = _buildTestMazos();
+      final fakeRepo = FakeMazoRepository(mazos);
+      final originalCartaIds = mazos.first.cartaIds.toList();
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            mazoRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+          child: const MaterialApp(home: LibreScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Long press -> Edit
+      await tester.longPress(find.text('Rompehielos'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      await tester.tap(find.text('Editar mazo'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // Press back button to cancel
+      await tester.tap(find.byType(CircularBackButton));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // The mazo should be unchanged
+      expect(mazos.length, 2);
+      expect(mazos.first.cartaIds, originalCartaIds);
     });
   });
 }

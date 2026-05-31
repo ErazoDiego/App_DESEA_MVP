@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 ///
 /// Usa un [AnimationController] para animar la [LinearProgressIndicator]
 /// y un [Timer] periódico para actualizar el display de tiempo restante.
+/// Soporta pausa/reanudación mediante el flag [isPaused].
 class TimerBar extends StatefulWidget {
   /// Duración total en segundos.
   final int seconds;
@@ -13,10 +14,17 @@ class TimerBar extends StatefulWidget {
   /// Callback cuando el timer llega a cero.
   final VoidCallback onComplete;
 
+  /// Indica si el timer debe estar en pausa.
+  ///
+  /// Cuando cambia a `true` se detiene la animación y el contador.
+  /// Cuando cambia a `false` se reanuda desde el punto donde se detuvo.
+  final bool isPaused;
+
   const TimerBar({
     super.key,
     required this.seconds,
     required this.onComplete,
+    this.isPaused = false,
   });
 
   @override
@@ -44,6 +52,42 @@ class _TimerBarState extends State<TimerBar>
       }
     });
     _controller.forward();
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_remainingSeconds > 0) {
+        _remainingSeconds--;
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(TimerBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isPaused != widget.isPaused) {
+      if (widget.isPaused) {
+        _pause();
+      } else {
+        _resume();
+      }
+    }
+  }
+
+  /// Pausa la animación y el contador.
+  void _pause() {
+    _controller.stop();
+    _timer.cancel();
+  }
+
+  /// Reanuda la animación y el contador desde donde se detuvieron.
+  ///
+  /// Ajusta la duración del [AnimationController] al tiempo restante para
+  /// que la barra de progreso y el contador de tiempo estén sincronizados.
+  void _resume() {
+    if (_remainingSeconds <= 0) return;
+
+    _controller
+      ..duration = Duration(seconds: _remainingSeconds)
+      ..forward();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_remainingSeconds > 0) {

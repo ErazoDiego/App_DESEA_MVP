@@ -1,0 +1,316 @@
+{
+  "@@locale": "es",
+
+  "@appName": { "description": "App display name" },
+  "appName": "DESEA",
+
+  "@tagline": { "description": "Tagline on welcome/home screen" },
+  "tagline": "Tu noche empieza acá",
+
+  "@startNight": { "description": "Button to start the game" },
+  "startNight": "Empezar noche",
+
+  "@howToPlay": { "description": "Link to game instructions" },
+  "howToPlay": "Cómo se juega",
+
+  "@sesion": { "description": "Session mode label" },
+  "sesion": "Sesión",
+
+  "@libre": { "description": "Free play mode label" },
+  "libre": "Libre",
+
+  "@save": { "description": "Generic save action" },
+  "save": "Guardar",
+
+  "@next": { "description": "Generic next step" },
+  "next": "Siguiente",
+
+  "@pause": { "description": "Pause session" },
+  "pause": "Pausar",
+
+  "@statsLine": { "description": "Stats line on welcome/home" },
+  "statsLine": "+150 cartas · 3 niveles · 2 modos",
+
+  "@comenzar": { "description": "Button to start onboarding" },
+  "comenzar": "Comenzar",
+
+  "@onboardingAgeTitle": { "description": "Age verification screen title" },
+  "onboardingAgeTitle": "Verificación de edad",
+
+  "@onboardingAgeBody": { "description": "Age verification body text" },
+  "onboardingAgeBody": "Debés ser mayor de 18 años para usar DESEA.",
+
+  "@edad": { "description": "Age field label" },
+  "edad": "Edad",
+
+  "@anyos": { "description": "Years unit" },
+  "anyos": "años",
+
+  "@confirmarEdad": { "description": "Confirm age button" },
+  "confirmarEdad": "Confirmar edad",
+
+  "@seleccionaModo": { "description": "Mode selection title" },
+  "seleccionaModo": "Seleccioná tu modo",
+
+  "@modoSesion": { "description": "Session mode name" },
+  "modoSesion": "Sesión",
+
+  "@modoSesionDesc": { "description": "Session mode description" },
+  "modoSesionDesc": "20 cartas con arco progresivo",
+
+  "@modoLibre": { "description": "Free mode name" },
+  "modoLibre": "Libre",
+
+  "@modoLibreDesc": { "description": "Free mode description" },
+  "modoLibreDesc": "Elegí las cartas que quieras",
+
+  "@siguiente": { "description": "Generic next button" },
+  "siguiente": "Siguiente",
+
+  "@comoSeJuega": { "description": "Instructions screen title" },
+  "comoSeJuega": "Cómo se juega",
+
+  "@swipeGesture": { "description": "Swipe gesture instruction" },
+  "swipeGesture": "Deslizá las cartas para pasar a la siguiente",
+
+  "@guardarGesture": { "description": "Save cards gesture instruction" },
+  "guardarGesture": "Guardá tus cartas favoritas",
+
+  "@comodinGesture": { "description": "Wildcard gesture instruction" },
+  "comodinGesture": "Usá comodines para personalizar la experiencia",
+
+  "@entendido": { "description": "I understood button" },
+  "entendido": "Entendido",
+
+  "@todoListo": { "description": "Ready screen title" },
+  "todoListo": "¡Todo listo!",
+
+  "@resumenConfig": { "description": "Configuration summary title" },
+  "resumenConfig": "Resumen de tu configuración",
+
+  "@modo": { "description": "Mode label" },
+  "modo": "Modo",
+
+  "@empezar": { "description": "Start button" },
+  "empezar": "Empezar",
+
+  "@gameHubTitle": { "description": "GameHub screen title" },
+  "gameHubTitle": "Elegí cómo jugar",
+
+  "@libreCardDescription": { "description": "Libre card description in hub" },
+  "libreCardDescription": "Armá tu propio mazo",
+
+  "@modoExplicacion": { "description": "Mode explanation text" },
+  "modoExplicacion": "Sesión: 20 cartas con arco progresivo. Libre: armá tu propio mazo.",
+
+  "@gameHubColeccionSection": { "description": "Collection section title" },
+  "gameHubColeccionSection": "Tu colección",
+
+  "@gameHubImmersionSubtitle": { "description": "Hero subtitle" },
+  "gameHubImmersionSubtitle": "Tu noche empieza acá",
+
+
+  "@moodPicante": { "description": "Spicy mood pill" },
+  "moodPicante": "Picante",
+
+  "@moodDivertido": { "description": "Fun mood pill" },
+  "moodDivertido": "Divertido",
+
+  "@gameHubSesionDuracion": { "description": "Session duration chip" },
+  "gameHubSesionDuracion": "~30 min",
+
+  "@gameHubSesionTipo": { "description": "Session type chip" },
+  "gameHubSesionTipo": "Progresivo",
+
+  "@gameHubRecomendado": { "description": "Recommended badge" },
+  "gameHubRecomendado": "Recomendado",
+
+  "@gameHubTusCartasSection": { "description": "User cards section title" },
+  "gameHubTusCartasSection": "Tus cartas",
+
+  "@preparandoSesion": { "description": "Session loading message" },
+  "preparandoSesion": "Preparando sesión...",
+
+  "@sesionCompletada": { "description": "Session completed message" },
+  "sesionCompletada": "¡Sesión completada!",
+
+  "@sesionPausada": { "description": "Session paused message" },
+  "sesionPausada": "Sesión pausada",
+
+  "@continuar": { "description": "Continue button" },
+  "continuar": "Continuar",
+
+  "@reiniciarSesion": { "description": "Restart session button" },
+  "reiniciarSesion": "Reiniciar sesión",
+
+  "@volverInicio": { "description": "Go back to home button" },
+  "volverInicio": "Volver al inicio",
+
+  "@comodinProximamente": { "description": "Wildcard coming soon message" },
+  "comodinProximamente": "Comodín: próximamente",
+
+  "@guardada": { "description": "Already saved label" },
+  "guardada": "Guardada",
+
+  "@guardar": { "description": "Save current card button" },
+  "guardar": "Guardar",
+
+  "@finalizar": { "description": "Finish session button" },
+  "finalizar": "Finalizar",
+
+  "@pausar": { "description": "Pause button" },
+  "pausar": "Pausar",
+
+  "@reintentar": { "description": "Retry button" },
+  "reintentar": "Reintentar",
+
+  "@noSesionActiva": { "description": "No active session message" },
+  "noSesionActiva": "No hay sesión activa",
+
+  "@iniciarSesion": { "description": "Start session button" },
+  "iniciarSesion": "Iniciar sesión",
+
+  "@sesionModoElegido": { "description": "Chosen mode label" },
+  "sesionModoElegido": "Modo elegido",
+
+  "@sesionDuracion": { "description": "Estimated duration badge" },
+  "sesionDuracion": "~30 min",
+
+  "@sesionAsiVaLaSesion": { "description": "Timeline title" },
+  "sesionAsiVaLaSesion": "Así va la sesión",
+
+  "@sesionNivel1": { "description": "Level 1 title" },
+  "sesionNivel1": "Nivel 1 · Suave",
+
+  "@sesionNivel1Desc": { "description": "Level 1 description" },
+  "sesionNivel1Desc": "Preguntas para romper el hielo y soltar la lengua.",
+
+  "@sesionNivel2": { "description": "Level 2 title" },
+  "sesionNivel2": "Nivel 2 · Íntimo",
+
+  "@sesionNivel2Desc": { "description": "Level 2 description" },
+  "sesionNivel2Desc": "Deseos, fantasías y lo que nunca dijiste.",
+
+  "@sesionNivel3": { "description": "Level 3 title" },
+  "sesionNivel3": "Nivel 3 · Sin filtro",
+
+  "@sesionNivel3Desc": { "description": "Level 3 description" },
+  "sesionNivel3Desc": "Solo para cuando ya no hay vuelta atrás.",
+
+  "@empezarSesion": { "description": "Primary CTA to start session" },
+  "empezarSesion": "Empezar sesión",
+
+  "@cambiarModo": { "description": "Change mode button" },
+  "cambiarModo": "Cambiar modo",
+
+  "@sesionStatsCartas": { "description": "Session stats: card count" },
+  "sesionStatsCartas": "20 cartas",
+
+  "@sesionStatsNiveles": { "description": "Session stats: level count" },
+  "sesionStatsNiveles": "3 niveles",
+
+  "@sesionStatsMazos": { "description": "Session stats: decks (unused)" },
+  "sesionStatsMazos": "2 mazos",
+
+  "@calentamiento": { "description": "Warm-up phase name" },
+  "calentamiento": "Calentamiento",
+
+  "@tension": { "description": "Tension phase name" },
+  "tension": "Tensión",
+
+  "@climax": { "description": "Climax phase name" },
+  "climax": "Clímax",
+
+  "@cierre": { "description": "Closing phase name" },
+  "cierre": "Cierre",
+
+  "@libreCrearMazo": { "description": "Create deck button" },
+  "libreCrearMazo": "Crear mazo",
+
+  "@libreCrearCartaPers": { "description": "Create card button" },
+  "libreCrearCartaPers": "Crear carta",
+
+  "@libreCardNameLabel": { "description": "Card name field label" },
+  "libreCardNameLabel": "Nombre de la carta",
+
+  "@libreInstruccionLabel": { "description": "Instruction field label" },
+  "libreInstruccionLabel": "Instrucción",
+
+  "@libreCategoriaLabel": { "description": "Category field label" },
+  "libreCategoriaLabel": "Categoría",
+
+  "@libreNivelLabel": { "description": "Level field label" },
+  "libreNivelLabel": "Nivel",
+
+  "@libreTiempoLabel": { "description": "Time field label" },
+  "libreTiempoLabel": "Tiempo (segundos)",
+
+  "@libreDirigidaLabel": { "description": "Directed to field label" },
+  "libreDirigidaLabel": "Dirigida a",
+
+  "@libreGuardarCarta": { "description": "Save card button" },
+  "libreGuardarCarta": "Guardar carta",
+
+  "@libreCartaCreada": { "description": "Card created snackbar" },
+  "libreCartaCreada": "¡Carta creada!",
+
+  "@libreDeckNameHint": { "description": "Deck name hint" },
+  "libreDeckNameHint": "Nombre del mazo",
+
+  "@libreMazoCompletado": { "description": "Deck completed message" },
+  "libreMazoCompletado": "¡Mazo completado!",
+
+  "@anterior": { "description": "Previous card button" },
+  "anterior": "Anterior",
+
+  "@libreNameRequired": { "description": "Required field: name" },
+  "libreNameRequired": "El nombre es obligatorio",
+
+  "@libreInstruccionRequired": { "description": "Required field: instruction" },
+  "libreInstruccionRequired": "La instrucción es obligatoria",
+
+  "@savedCardsTitle": { "description": "Saved cards screen title" },
+  "savedCardsTitle": "Guardadas",
+
+  "@savedCardsEmpty": { "description": "Empty saved cards message" },
+  "savedCardsEmpty": "Todavía no guardaste ninguna carta",
+
+  "@savedCardsFilterAll": { "description": "All filter label" },
+  "savedCardsFilterAll": "Todas",
+
+  "@savedCardsNoMatch": { "description": "No matching cards message" },
+  "savedCardsNoMatch": "No hay cartas que coincidan",
+
+  "@savedCardsDeleteTitle": { "description": "Delete confirmation title" },
+  "savedCardsDeleteTitle": "Eliminar carta",
+
+  "@savedCardsDeleteConfirm": { "description": "Delete confirmation button" },
+  "savedCardsDeleteConfirm": "Eliminar",
+
+  "@savedCardsHubTitle": { "description": "Hub access title for saved cards" },
+  "savedCardsHubTitle": "Cartas guardadas",
+
+  "@misCartasTitle": { "description": "Custom cards screen title" },
+  "misCartasTitle": "Tus cartas",
+
+  "@misCartasEmpty": { "description": "Empty custom cards message" },
+  "misCartasEmpty": "Todavía no creaste ninguna carta personalizada",
+
+  "@misCartasEditTitle": { "description": "Edit card dialog title" },
+  "misCartasEditTitle": "Editar carta",
+
+  "@misCartasDeleteTitle": { "description": "Delete card confirmation title" },
+  "misCartasDeleteTitle": "Eliminar carta",
+
+  "@misCartasDeleteConfirm": { "description": "Delete card confirmation button" },
+  "misCartasDeleteConfirm": "Eliminar",
+
+  "@misCartasHubTitle": { "description": "Hub access title for custom cards" },
+  "misCartasHubTitle": "Mis cartas",
+
+  "@misCartasFormCreateTitle": { "description": "Create card form title" },
+  "misCartasFormCreateTitle": "Crear carta",
+
+  "@misCartasFormEditTitle": { "description": "Edit card form title" },
+  "misCartasFormEditTitle": "Editar carta personalizada"
+}

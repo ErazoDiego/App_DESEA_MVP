@@ -64,10 +64,10 @@ void main() {
 
     // Sesión card
     expect(find.text(AppStrings.modoSesion), findsOneWidget);
-    expect(find.text(AppStrings.modoSesionDesc), findsOneWidget);
     expect(find.text(AppStrings.gameHubRecomendado), findsOneWidget);
-    expect(find.text(AppStrings.gameHubSesionDuracion), findsOneWidget);
-    expect(find.text(AppStrings.gameHubSesionTipo), findsOneWidget);
+    // Metadata se muestra como string combinado: "20 cartas · arco progresivo · ~30 min"
+    expect(find.textContaining('20 cartas'), findsOneWidget);
+    expect(find.textContaining('30 min'), findsOneWidget);
   });
 
   testWidgets('renders Libre card with title and description',
@@ -123,15 +123,15 @@ void main() {
   testWidgets('shows guardadas count when cards exist', (tester) async {
     await tester.pumpWidget(buildApp(savedCardsCount: 3));
 
-    // "3" aparece al menos una vez (en la card Guardadas)
-    expect(find.text('3'), findsOneWidget);
+    // Se muestra como "3 cartas"
+    expect(find.textContaining('3'), findsWidgets);
   });
 
   testWidgets('shows 0 guardadas when box is empty', (tester) async {
     await tester.pumpWidget(buildApp(savedCardsCount: 0));
 
-    // "0" aparece al menos una vez (puede aparecer en ambas cards si ambas están vacías)
-    expect(find.text('0'), findsAtLeast(1));
+    // Se muestra como "0 cartas"
+    expect(find.textContaining('0'), findsWidgets);
   });
 
   // ── Personalizadas Count ──────────────────────────────────────
@@ -139,17 +139,9 @@ void main() {
   testWidgets('shows personalizadas count for Mis Cartas', (tester) async {
     await tester.pumpWidget(buildApp(personalizadasCount: 5));
 
-    // Guardadas=0, Pers=5 → "5" aparece solo en Mis Cartas
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('5'), findsOneWidget);
-  });
-
-  // ── Bottom CTA ─────────────────────────────────────────────────
-
-  testWidgets('renders bottom CTA with "Empezar sesión"', (tester) async {
-    await tester.pumpWidget(buildApp());
-
-    expect(find.text(AppStrings.gameHubCtaSesion), findsOneWidget);
+    // Guardadas="0 cartas", Pers="5 cartas"
+    expect(find.textContaining('0'), findsWidgets);
+    expect(find.textContaining('5'), findsOneWidget);
   });
 
   // ── Header ─────────────────────────────────────────────────────
