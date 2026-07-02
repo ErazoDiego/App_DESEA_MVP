@@ -54,5 +54,264 @@
     "texto": "¿Qué es lo que más miedo te da de esta relación?",
     "dirigida": "mixta",
     "tiempo_segundos": null
+  },
+  {
+    "id": "suave_09",
+    "tipo": "verdad",
+    "texto": "¿Cuál fue el momento exacto en que te diste cuenta de que te gustaba? ¿Qué estabas haciendo?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_10",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que siempre quisiste preguntarme pero nunca te animaste?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_11",
+    "tipo": "verdad",
+    "texto": "¿Qué es lo que más te gusta de cuando estamos solos, sin apuro?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_12",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que hago sin darme cuenta que te pone de buen humor?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_13",
+    "tipo": "verdad",
+    "texto": "¿Qué parte de tu cuerpo te gustaría que le prestara más atención ella?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_14",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que él haga que te haga sentir especialmente deseada?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_15",
+    "tipo": "verdad",
+    "texto": "Si pudieras revivir una sola noche de los dos, ¿cuál elegiría y por qué?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_16",
+    "tipo": "verdad",
+    "texto": "¿Hay algo del pasado que todavía te cuesta soltar y que me afecta a mí sin que yo lo sepa?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_17",
+    "tipo": "verdad",
+    "texto": "¿Cuándo fue la última vez que te sentiste realmente solo/a, incluso estando conmigo?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_18",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que necesitás de mí y nunca me lo pediste directamente?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_19",
+    "tipo": "verdad",
+    "texto": "¿Qué inseguridad tuya creés que yo todavía no conozco del todo?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_20",
+    "tipo": "reto",
+    "texto": "Mirá a tu pareja a los ojos en silencio durante 60 segundos sin reírte.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "suave_21",
+    "tipo": "reto",
+    "texto": "Hacé un masaje de cuello y hombros durante 2 minutos. Sin apuro.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "suave_22",
+    "tipo": "reto",
+    "texto": "Cantá o tararearle al oído la primera canción que se te venga a la mente.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_23",
+    "tipo": "reto",
+    "texto": "Sin usar palabras, hacé que tu pareja entienda cómo te sentís hoy. Solo con gestos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 45
+  },
+  {
+    "id": "suave_24",
+    "tipo": "reto",
+    "texto": "Escribí con tu dedo en la espalda de ella una palabra que la describa. Ella tiene que adivinarla.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_25",
+    "tipo": "reto",
+    "texto": "Dale un abrazo y quédense así durante 30 segundos completos sin moverse.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "suave_26",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que te gustaría que hiciéramos más seguido pero nunca dijiste nada?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_27",
+    "tipo": "verdad",
+    "texto": "¿Cuál fue la primera vez que pensaste que esto podía ser algo serio?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_28",
+    "tipo": "verdad",
+    "texto": "¿Qué cosa pequeña que hago te hace sentir más querida sin que yo lo sepa?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_29",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que él hace cuando está distraído que te parece irresistible?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_30",
+    "tipo": "verdad",
+    "texto": "¿Cuál es el lugar favorito donde te gusta que te abrace?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_31",
+    "tipo": "verdad",
+    "texto": "¿Qué momento del día esperás más cuando estamos juntos?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_32",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que siempre quisiste que hiciéramos juntos y nunca propusiste?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_33",
+    "tipo": "reto",
+    "texto": "Decile a tu pareja tres cosas que te encantan de cómo te trata. Con detalles, sin apuro.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_34",
+    "tipo": "reto",
+    "texto": "Buscá una canción que te recuerde a ella y explicale por qué. Ella solo escucha.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_35",
+    "tipo": "reto",
+    "texto": "Tomale la mano y sin hablar, durante 30 segundos, solo miralo a los ojos.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "suave_36",
+    "tipo": "reto",
+    "texto": "Describí cómo sería el día perfecto para los dos, con el mayor detalle posible.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_37",
+    "tipo": "reto",
+    "texto": "Escribí en la mano de tu pareja una palabra que la defina. Ella tiene que adivinar cuál es sin mirar.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_38",
+    "tipo": "reto",
+    "texto": "Dale un masaje en las manos durante 60 segundos sin decir nada.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "suave_39",
+    "tipo": "reto",
+    "texto": "Contale un recuerdo tuyo de la infancia que nunca le habías contado antes.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_40",
+    "tipo": "deseo",
+    "texto": "Quisiera que algún día me lleves a un lugar que sea especial para vos y me cuentes por qué.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_41",
+    "tipo": "deseo",
+    "texto": "Me gustaría que me abraces fuerte sin motivo, en cualquier momento del día.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_42",
+    "tipo": "deseo",
+    "texto": "Quisiera que alguna vez me cocines algo, aunque sea simple. Solo por mí.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_43",
+    "tipo": "deseo",
+    "texto": "Me gustaría que me digas más seguido qué es lo que más te gusta de estar conmigo.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_44",
+    "tipo": "deseo",
+    "texto": "Quisiera que algún día me escribas algo, aunque sea un mensaje corto, diciéndome cómo me ves vos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "suave_45",
+    "tipo": "deseo",
+    "texto": "Me gustaría que la próxima vez que estemos juntos apaguemos el teléfono y seamos solo nosotros.",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
   }
 ]

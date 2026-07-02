@@ -96,5 +96,271 @@
     "texto": "¿Cuál es la fantasía que más te excita pero todavía no te animaste a probar?",
     "dirigida": "mixta",
     "tiempo_segundos": null
+  },
+  {
+    "id": "picante_15",
+    "tipo": "verdad",
+    "texto": "¿Cuál es el lugar más inusual donde te imaginaste que podría pasar algo entre nosotros?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_16",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que nunca me pediste en la cama pero que realmente querés que pase?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_17",
+    "tipo": "verdad",
+    "texto": "¿Cuándo fue la última vez que te costó contenerte frente a mí? ¿Qué pasó?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_18",
+    "tipo": "verdad",
+    "texto": "¿Qué haría ella para volverte completamente loco sin tocarte?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_19",
+    "tipo": "verdad",
+    "texto": "¿Qué le susurrarías al oído si quisieras que todo empiece ahora mismo?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_20",
+    "tipo": "verdad",
+    "texto": "¿Hay una fantasía que siempre quisiste contarme pero nunca encontraste el momento?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_21",
+    "tipo": "verdad",
+    "texto": "¿Qué parte de mi cuerpo te resulta más irresistible y por qué?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_22",
+    "tipo": "reto",
+    "texto": "Besate durante 30 segundos sin que ninguno mueva las manos. Solo los labios.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "picante_23",
+    "tipo": "reto",
+    "texto": "Susurrále al oído lo más atrevido que te gustaría hacer esta noche. Ella solo escucha.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_24",
+    "tipo": "reto",
+    "texto": "Sacá un cubo de hielo y pasalo por el cuello y la clavícula de tu pareja durante 30 segundos.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "picante_25",
+    "tipo": "reto",
+    "texto": "Poné una canción lenta y bailen juntos en silencio. Quien hable primero pierde.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "picante_26",
+    "tipo": "reto",
+    "texto": "Tapate los ojos. Ella te da tres besos en lugares que elige ella. Vos tenés que adivinar dónde.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_27",
+    "tipo": "reto",
+    "texto": "Tenés 60 segundos para hacer que él pierda la concentración usando solo palabras.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "picante_28",
+    "tipo": "reto",
+    "texto": "Turno de masaje: uno elige la zona, el otro lo da durante 90 segundos. Sin saltearse nada.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 90
+  },
+  {
+    "id": "picante_29",
+    "tipo": "verdad",
+    "texto": "¿Cuál es la fantasía que más te excita y nunca me contaste por completo?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_30",
+    "tipo": "verdad",
+    "texto": "¿Qué es lo más atrevido que alguna vez pensaste hacerle y no lo hiciste?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_31",
+    "tipo": "verdad",
+    "texto": "¿Qué es lo que más te gusta de cuando él pierde el control?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_32",
+    "tipo": "verdad",
+    "texto": "Si esta noche no hubiera límites y nadie se enterara, ¿qué propondrías?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_33",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que viste o leíste alguna vez que te excitó mucho y nunca me contaste?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_34",
+    "tipo": "reto",
+    "texto": "Describí en detalle y en voz alta lo que harías si esta noche no hubiera ningún límite. Ella solo escucha.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_35",
+    "tipo": "reto",
+    "texto": "Usando solo tus manos y sin bajar de la cintura para arriba, hacé que él pida que pares.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "picante_36",
+    "tipo": "reto",
+    "texto": "Tapale los ojos a tu pareja con lo que tengan a mano. Tenés 2 minutos para que no piense en nada más.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "picante_37",
+    "tipo": "reto",
+    "texto": "Susurrále al oído la fantasía que más te excita, con todos los detalles. Sin apurarte.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_38",
+    "tipo": "reto",
+    "texto": "Acercate por atrás, sin tocar, y susurrá al oído: \"Estoy pensando en cosas que no te voy a contar todavía.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_39",
+    "tipo": "reto",
+    "texto": "Mirala despacio de arriba a abajo y decile con calma: \"No sé si sabés el efecto que me causás cuando te vestís así.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_40",
+    "tipo": "reto",
+    "texto": "Pasá despacio detrás de él y decile al oído sin detenerte: \"Esta noche decidís vos cómo empieza. Pero termina como yo quiero.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_41",
+    "tipo": "reto",
+    "texto": "Tocale el cuello suavemente y decí muy cerca: \"Tengo ganas de hacerte olvidar todo lo que pasó hoy.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_42",
+    "tipo": "reto",
+    "texto": "Sin mirarle a los ojos, como al pasar, decí en voz baja: \"Hoy me cuesta más de lo normal no tocarte.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_43",
+    "tipo": "reto",
+    "texto": "Acercate despacio hasta que casi se toquen los labios y antes de besarla decí: \"Todavía no. Quiero que pidas.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_44",
+    "tipo": "reto",
+    "texto": "Tomalo de la remera suavemente, miralo y decile: \"Necesito que prestes atención. Voy a decirlo una sola vez.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_45",
+    "tipo": "reto",
+    "texto": "Pasá los dedos por su cuello y susurrá muy despacio: \"¿Sabés cuánto tiempo estuve pensando en este momento?\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_46",
+    "tipo": "reto",
+    "texto": "Acercate por atrás, labios casi tocando su cuello, y decí sin apuro: \"Esta noche vas a pedirme que pare. Y yo voy a seguir igual.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_47",
+    "tipo": "reto",
+    "texto": "Sentate encima de él, miralo fijo y decile despacio: \"Hoy mando yo. Y todavía no decidí qué voy a hacer con vos.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_48",
+    "tipo": "reto",
+    "texto": "Con los labios rozando su oreja, sin tocar nada más, decí: \"Tengo una fantasía que nunca te conté. Esta noche te la muestro.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_49",
+    "tipo": "reto",
+    "texto": "Tomala del mentón suavemente para que te mire y decí con calma: \"Quiero que recuerdes esta noche cada vez que cerrés los ojos.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_50",
+    "tipo": "reto",
+    "texto": "Pasá despacio los dedos por su pecho y decí sin mirarlo: \"Voy a hacer que se te olvide cómo se llaman las cosas.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_51",
+    "tipo": "reto",
+    "texto": "En silencio, acercate hasta respirar el mismo aire y antes de cualquier cosa decí: \"No te voy a pedir permiso. Pero podés decirme que pare cuando quieras.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "picante_52",
+    "tipo": "reto",
+    "texto": "Con una mano en su cadera y los labios al oído decí muy lento: \"Tenemos toda la noche. Y pienso usarla entera.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
   }
 ]

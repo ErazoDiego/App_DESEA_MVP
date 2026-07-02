@@ -75,5 +75,215 @@
     "texto": "Tu pareja te tapa los ojos con una venda y te toca donde quiera durante 90 segundos.",
     "dirigida": "mixta",
     "tiempo_segundos": 90
+  },
+  {
+    "id": "intenso_12",
+    "tipo": "verdad",
+    "texto": "Si pudieras pedirme una sola cosa para esta noche sin ningún tipo de vergüenza, ¿qué sería?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_13",
+    "tipo": "verdad",
+    "texto": "¿En qué momento de los últimos días te resultó más difícil controlar las ganas de tocarla?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_14",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que él haga en la cama que te vuelva loca y que nunca le dijiste directamente?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_15",
+    "tipo": "verdad",
+    "texto": "¿Cuál es la parte de mi cuerpo que más te cuesta ignorar cuando estamos juntos?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_16",
+    "tipo": "verdad",
+    "texto": "Si pudiéramos grabar esta noche y verla mañana, ¿qué te gustaría que se vea?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_17",
+    "tipo": "verdad",
+    "texto": "¿Qué haría ella para que en 30 segundos ya no puedas pensar en nada más?",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_18",
+    "tipo": "verdad",
+    "texto": "¿Hay algo que siempre quisiste que él hiciera más seguido y nunca se lo pediste?",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_19",
+    "tipo": "verdad",
+    "texto": "¿Cuál es el lugar de mi cuerpo donde más te gusta que te preste atención y por qué?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_20",
+    "tipo": "verdad",
+    "texto": "Si esta noche pudieras pedirme que hiciera cualquier cosa sin que te juzgara, ¿qué pedirías?",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_21",
+    "tipo": "reto",
+    "texto": "Durante 60 segundos, tocá solo su cuello y su espalda. Nada más. Hacé que sea suficiente.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "intenso_22",
+    "tipo": "reto",
+    "texto": "Tomalo de la cara con las dos manos, miralo fijo y no digas nada durante 30 segundos. Después hacé lo que quieras.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "intenso_23",
+    "tipo": "reto",
+    "texto": "Tapale los ojos con lo que tengan a mano. Durante 2 minutos, solo podés usar tus manos para comunicarte.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "intenso_24",
+    "tipo": "reto",
+    "texto": "Uno se acuesta. El otro tiene 3 minutos para explorar sin restricciones — pero sin ir más lejos de lo que el otro permita.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 180
+  },
+  {
+    "id": "intenso_25",
+    "tipo": "reto",
+    "texto": "Besa cada parte de su cuello durante 45 segundos sin apurarte. Si ella habla, empezás de vuelta.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": 45
+  },
+  {
+    "id": "intenso_26",
+    "tipo": "reto",
+    "texto": "Pasá las manos por su pecho y su espalda durante 90 segundos sin mirarlo. Después decile en voz baja qué sentiste.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 90
+  },
+  {
+    "id": "intenso_27",
+    "tipo": "reto",
+    "texto": "Cada uno elige una zona del cuerpo del otro. Se turnan 2 minutos cada uno. Sin saltear.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 120
+  },
+  {
+    "id": "intenso_28",
+    "tipo": "reto",
+    "texto": "En silencio total, uno guía al otro solo con presión de manos durante 3 minutos. El que es guiado no puede preguntar nada.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 180
+  },
+  {
+    "id": "intenso_29",
+    "tipo": "reto",
+    "texto": "Describí en voz baja y con detalle lo que estás pensando hacer esta noche. Ella solo escucha sin interrumpirte.",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_30",
+    "tipo": "reto",
+    "texto": "Acercate despacio hasta que casi se toquen. Mantenete ahí sin tocarlo durante 30 segundos. Después decidís vos qué sigue.",
+    "dirigida": "paraElla",
+    "tiempo_segundos": 30
+  },
+  {
+    "id": "intenso_31",
+    "tipo": "reto",
+    "texto": "Uno elige la temperatura — hielo o calor. El otro aplica durante 60 segundos donde el primero indique.",
+    "dirigida": "mixta",
+    "tiempo_segundos": 60
+  },
+  {
+    "id": "intenso_32",
+    "tipo": "reto",
+    "texto": "Pasá despacio detrás de ella, sin tocarla todavía, y susurrá muy cerca: \"Hoy me estoy guardando muchas cosas. No sé por cuánto tiempo más.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_33",
+    "tipo": "reto",
+    "texto": "Tomalo de la muñeca suavemente, miralo y decile sin apurarte: \"Hay algo que quiero pedirte. Pero primero necesito que te quedes quieto.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_34",
+    "tipo": "reto",
+    "texto": "Acercate hasta respirar el mismo aire, sin tocarte todavía, y decí muy despacio: \"Si supieras lo que estoy pensando ahora mismo, no podríamos seguir hablando.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_35",
+    "tipo": "reto",
+    "texto": "Ponele una mano en la cintura por atrás, sin moverla, y decile al oído: \"Esta noche voy a prestarte atención de una manera que no olvidás fácil.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_36",
+    "tipo": "reto",
+    "texto": "Sentate encima de él sin moverte y miralo directo a los ojos antes de decirle: \"Todavía no decidí qué voy a hacer con vos. Pero ya lo estoy pensando.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_37",
+    "tipo": "reto",
+    "texto": "Sin mirarle a los ojos, con los labios cerca de su cuello, decí sin tocarlo: \"Tengo ganas de vos de una manera que me cuesta disimular.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_38",
+    "tipo": "reto",
+    "texto": "Tomala del mentón para que te mire y decile con calma, sin apuro: \"Hoy no hay apuro. Pero tampoco hay escapatoria.\"",
+    "dirigida": "paraEl",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_39",
+    "tipo": "reto",
+    "texto": "Pasá un dedo despacio por su brazo sin mirarlo y decí en voz muy baja: \"Me pregunto si te das cuenta del efecto que me causás.\"",
+    "dirigida": "paraElla",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_40",
+    "tipo": "reto",
+    "texto": "Acercate por atrás, labios casi tocando su nuca, y antes de cualquier cosa decí: \"Voy a empezar despacio. Pero no te prometo que termine así.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
+  },
+  {
+    "id": "intenso_41",
+    "tipo": "reto",
+    "texto": "Con una mano en su cadera y la boca en su oído, decí muy lento antes de moverse: \"Esta noche no hay reglas. Solo hay lo que los dos queremos que pase.\"",
+    "dirigida": "mixta",
+    "tiempo_segundos": null
   }
 ]
